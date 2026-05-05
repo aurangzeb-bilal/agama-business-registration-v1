@@ -576,13 +576,8 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Error occurs while sending new code to you. Please contact site administrator.",
+							"assignmentExpression": "\"Error occurs while sending new code to you. Please contact site administrator.\"",
 							"assignedVariableName": "otpUiFeedback.errorMessage"
-						},
-						{
-							"variableTypeCheck": true,
-							"assignmentExpression": "",
-							"assignedVariableName": "otpUiFeedback.infoMessage"
 						},
 						{
 							"variableTypeCheck": false,
@@ -602,7 +597,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-35f04f9f-e860-463c-83ae-a6452697d3ef",
@@ -657,13 +653,8 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "An OTP code has been send to your register mobile number.",
+							"assignmentExpression": "\"An OTP code has been send to your register mobile number.\"",
 							"assignedVariableName": "otpUiFeedback.infoMessage"
-						},
-						{
-							"variableTypeCheck": true,
-							"assignmentExpression": "",
-							"assignedVariableName": "otpUiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": false,
@@ -683,7 +674,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-f78bb99f-8cac-4135-80a5-975c892127c5",
@@ -1133,13 +1125,8 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Invalid code provided.",
+							"assignmentExpression": "\"Invalid code provided.\"",
 							"assignedVariableName": "otpUiFeedback.errorMessage"
-						},
-						{
-							"variableTypeCheck": true,
-							"assignmentExpression": "",
-							"assignedVariableName": "otpUiFeedback.infoMessage"
 						}
 					],
 					"nodeIcon": "material-symbols:equal",
@@ -1154,7 +1141,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-2a248205-1af4-408c-a62f-a03e447d9ddf",
@@ -1835,8 +1823,8 @@
 		}
 	],
 	"viewport": {
-		"x": 265.9598086379407,
-		"y": 126.31092502562001,
+		"x": -1253.0401913620594,
+		"y": -10.689074974379992,
 		"zoom": 0.742756816348712
 	}
 }
