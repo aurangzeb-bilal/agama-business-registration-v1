@@ -367,7 +367,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": false,
+			"selected": true,
 			"dragging": false
 		},
 		{
@@ -891,7 +891,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "callNode-a79d4544-ab01-466f-8272-79a959eefc10",
@@ -1826,8 +1826,8 @@
 		}
 	],
 	"viewport": {
-		"x": -536.2533197236887,
-		"y": 214.59902884032,
+		"x": -254.25331972368872,
+		"y": 208.59902884032,
 		"zoom": 0.5
 	}
 }
