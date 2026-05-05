@@ -36,7 +36,8 @@
             "MWAPP_BASE_URL": "https://api.phiwallet.dev",
             "MWAPP_USER_PATH": "/v1/webhooks/users/%s"
         },
-        "org.gluu.agama.businessregistration.verifyphoneotp": {}
+        "org.gluu.agama.businessregistration.verifyphoneotp": {},
+        "code": {}
     },
     "name": "agama-business-registration-v1"
 }
