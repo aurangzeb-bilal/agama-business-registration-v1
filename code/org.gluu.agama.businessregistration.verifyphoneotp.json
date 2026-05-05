@@ -367,7 +367,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true,
+			"selected": false,
 			"dragging": false
 		},
 		{
@@ -882,7 +882,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\"",
+					"returnVariable": "ExceededTheNumberOfAttemptsAllowed",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -891,7 +891,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": false
+			"selected": true
 		},
 		{
 			"id": "callNode-a79d4544-ab01-466f-8272-79a959eefc10",
