@@ -17,8 +17,8 @@ Repeat 20 times max
           When resendCount is 3
                //  Maximum resend attempts exceeded
                Log "@info Maximum resend attempts exceeded"
-               it_sswau = {success:false, error: "ExceededResendAttempts"}
-               Finish it_sswau
+               it_chodu = {success:false, error: "ExceededResendAttempts"}
+               Finish it_chodu
           resendCount = Call org.gluu.agama.newregistration.CounterHelper#increment resendCount
           //  Resend attempt number
           Log "@info Resend attempt number: " resendCount
@@ -43,8 +43,8 @@ Repeat 20 times max
           When validationAttempts is 4
                //  Log validation exceeded
                Log "@info Maximum validation attempts exceeded"
-               it_gbsti = {success:false, error: ""ExceededTheNumberOfAttemptsAllowed""}
-               Finish it_gbsti
+               it_cnfsi = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+               Finish it_cnfsi
           Otherwise
                //   Validate the OTP code provided by the user.
                otpValidationResult = Call userRegistrationService validateOTPCode phone otpCreds.code
@@ -58,5 +58,5 @@ Repeat 20 times max
                     otpUiFeedback.errorMessage = "Invalid code provided."
 //  OTP verification loop completed
 Log "@info OTP verification loop completed"
-it_vldhg = {success:false, error: ""UnexpectedLoopCompletion" "}
-Finish it_vldhg
+it_esosf = {success:false, error: ""UnexpectedLoopCompletion" "}
+Finish it_esosf
