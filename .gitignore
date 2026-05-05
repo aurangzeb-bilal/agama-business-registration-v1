@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.iml
+
+# Build output
+*.class
+*.jar
+target/
+build/
+
+# Agama Lab artifacts (downloaded packages — built externally, not part of source)
+*.gama
