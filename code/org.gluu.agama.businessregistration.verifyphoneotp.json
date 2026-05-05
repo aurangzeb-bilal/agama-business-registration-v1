@@ -358,7 +358,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "ExceededResendAttempts",
+					"returnVariable": "\"ExceededResendAttempts\"",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -367,7 +367,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true,
+			"selected": false,
 			"dragging": false
 		},
 		{
@@ -882,7 +882,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\" ",
+					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\"",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -890,7 +890,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "callNode-a79d4544-ab01-466f-8272-79a959eefc10",
@@ -1825,8 +1826,8 @@
 		}
 	],
 	"viewport": {
-		"x": -657.2052521059454,
-		"y": 179.1754252257773,
-		"zoom": 0.5349746308311364
+		"x": -536.2533197236887,
+		"y": 214.59902884032,
+		"zoom": 0.5
 	}
 }
