@@ -179,25 +179,24 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     public Map<String, String> getPersonalUserDetails(String personalUid) {
         Map<String, String> result = new HashMap<>();
         try {
-            UserService userService = CdiUtil.bean(UserService.class);
-            if (userService == null) {
-                logger.error("UserService is NULL");
-                return result;
-            }
-
-            User fullUser = userService.getUser(personalUid, "uid", "inum", "mobile", "lang", "jansStatus");
+            // Use getUserByAttribute (via the local getUser helper) for a full-attribute load.
+            // Jans's getUser(uid, attrs...) variant doesn't reliably surface multi-valued
+            // attributes like 'mobile' when explicit attribute filters are applied.
+            User fullUser = getUser(UID, personalUid);
             if (fullUser == null) {
                 logger.info("Personal user not found in Jans for uid={}", personalUid);
                 return result;
             }
 
             String status = getSingleValuedAttr(fullUser, "jansStatus");
+            logger.info("getPersonalUserDetails: uid={} jansStatus={}", personalUid, status);
             if (status != null && !"active".equalsIgnoreCase(status)) {
                 logger.info("Personal user uid={} not active in Jans (status={})", personalUid, status);
                 return result;
             }
 
             String mobile = getSingleValuedAttr(fullUser, "mobile");
+            logger.info("getPersonalUserDetails: uid={} mobile={}", personalUid, mobile);
             if (mobile == null || mobile.trim().isEmpty()) {
                 logger.info("Personal user uid={} has no mobile attribute in Jans", personalUid);
                 return result;
@@ -209,6 +208,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             result.put("inum", inum);
             result.put("mobile", mobile);
             result.put("lang", lang != null ? lang : "en");
+            logger.info("getPersonalUserDetails: returning inum={} mobile={} lang={}", inum, mobile, lang);
             return result;
         } catch (Exception ex) {
             logger.error("getPersonalUserDetails failed for uid={}: {}", personalUid, ex.getMessage(), ex);
