@@ -26,7 +26,7 @@ Repeat 5 times max
           When personalUser.empty is true
                //  Same surface error: user verified in mwapp but missing/inactive/no-mobile in Jans
                Log "@error Jans availability check failed for: " personalUid
-               uiFeedback.errorMessage = Please use a verified account
+               uiFeedback.errorMessage = "Please use a verified account"
                personalInum = personalUser.inum
                personalPhone = personalUser.mobile
                personalLang = personalUser.lang
@@ -62,8 +62,8 @@ Repeat 5 times max
                                                   Log "@info Business email OTP resend requested"
                                                   When emailResendCount is 3
                                                        Log "@error Email OTP resend exceeded"
-                                                       it_hobmc = {success:false, error: ""ExceededResendAttempts""}
-                                                       Finish it_hobmc
+                                                       it_cpnxv = {success:false, error: ""ExceededResendAttempts""}
+                                                       Finish it_cpnxv
                                                   emailResendCount = Call org.gluu.agama.newregistration.CounterHelper#increment emailResendCount
                                                   Log "@info Email resend attempt: " emailResendCount
                                                   emailOtpCode = Call service sendEmail businessProfile.mail businessProfile.lang
@@ -74,8 +74,8 @@ Repeat 5 times max
                                                   emailValidationAttempts = Call org.gluu.agama.newregistration.CounterHelper#increment emailValidationAttempts
                                                   When emailValidationAttempts is 4
                                                        Log "@error Email OTP validation exceeded"
-                                                       it_jsvta = {success:false, error: ""ExceededTheNumberOfAttemptsAllowed""}
-                                                       Finish it_jsvta
+                                                       it_vfmqm = {success:false, error: ""ExceededTheNumberOfAttemptsAllowed""}
+                                                       Finish it_vfmqm
                                                   Otherwise
                                                        When emailOtpCreds.passcode is emailOtpCode
                                                             Log "@info Business email OTP verified - creating business user"
@@ -112,8 +112,8 @@ Repeat 5 times max
                                                                                 Finish secondOtpResult
                                                                            uiFeedback.errorMessage = "Phone confirmation failed. Try once more."
                                                                  Log "@error Confirmation phone loop exhausted"
-                                                                 it_jgahr = {success:false, error: ""ExceededTheNumberOfAttemptsAllowed""}
-                                                                 Finish it_jgahr
+                                                                 it_snpcz = {success:false, error: ""ExceededTheNumberOfAttemptsAllowed""}
+                                                                 Finish it_snpcz
                                                             //  Business creation failed - log and let outer loop retry profile entry
                                                             Log "@error Business user creation failed: %" E
                                                             uiFeedback.errorMessage = "Business account creation failed. Please try again."
@@ -123,8 +123,8 @@ Repeat 5 times max
                                                             uiFeedback.infoMessage = ""
                                         //  Email loop fell through without Finish - exhausted
                                         Log "@error Email OTP loop completed without success"
-                                        it_hpqjw = {success:false, error: "ExceededResendAttempts"}
-                                        Finish it_hpqjw
+                                        it_hnbmj = {success:false, error: "ExceededResendAttempts"}
+                                        Finish it_hnbmj
                                    Otherwise
                                         Log "@error Business username already taken: " businessProfile.uid
                                         uiFeedback.errorMessage = "This business username is already taken. Please choose a different one."
@@ -134,8 +134,8 @@ Repeat 5 times max
                                    uiFeedback.errorMessage = validation.message
                     //  Business profile loop exhausted (6 attempts)
                     Log "@error Business profile loop exhausted"
-                    it_fifpx = {success:false, error: ""BusinessProfileMaxAttempts""}
-                    Finish it_fifpx
+                    it_wjlfx = {success:false, error: ""BusinessProfileMaxAttempts""}
+                    Finish it_wjlfx
                Otherwise
                     //  First OTP failed - surface specific subflow errors immediately
                     When firstOtpResult.error is "ExceededTheNumberOfAttemptsAllowed"
@@ -147,5 +147,5 @@ Repeat 5 times max
                     uiFeedback.errorMessage = "Phone OTP failed. Try a different personal username."
 //  Outer Repeat (5 attempts) exhausted without successful gate + OTP
 Log "@error Personal lookup loop exhausted"
-it_fntom = {success:false, error: ""PersonalLookupMaxAttempts""}
-Finish it_fntom
+it_nxaoh = {success:false, error: ""PersonalLookupMaxAttempts""}
+Finish it_nxaoh
