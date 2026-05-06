@@ -179,9 +179,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     public Map<String, String> getPersonalUserDetails(String personalUid) {
         Map<String, String> result = new HashMap<>();
         try {
-            // Use getUserByAttribute (via the local getUser helper) for a full-attribute load.
-            // Jans's getUser(uid, attrs...) variant doesn't reliably surface multi-valued
-            // attributes like 'mobile' when explicit attribute filters are applied.
             User fullUser = getUser(UID, personalUid);
             if (fullUser == null) {
                 logger.info("Personal user not found in Jans for uid={}", personalUid);
@@ -189,16 +186,27 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             }
 
             String status = getSingleValuedAttr(fullUser, "jansStatus");
-            logger.info("getPersonalUserDetails: uid={} jansStatus={}", personalUid, status);
             if (status != null && !"active".equalsIgnoreCase(status)) {
-                logger.info("Personal user uid={} not active in Jans (status={})", personalUid, status);
+                logger.info("Personal user uid={} not active (status={})", personalUid, status);
                 return result;
             }
 
-            String mobile = getSingleValuedAttr(fullUser, "mobile");
-            logger.info("getPersonalUserDetails: uid={} mobile={}", personalUid, mobile);
+            // 'mobile' is multi-valued in the Jans schema, so getCustomAttribute().getValues() is the
+            // correct read path. getAttribute(name, true, false) returns null on multi-valued attrs.
+            UserService userService = CdiUtil.bean(UserService.class);
+            CustomObjectAttribute mobileAttr = userService.getCustomAttribute(fullUser, "mobile");
+            String mobile = null;
+            if (mobileAttr != null) {
+                if (mobileAttr.getValue() != null && !mobileAttr.getValue().isEmpty()) {
+                    mobile = mobileAttr.getValue();
+                } else if (mobileAttr.getValues() != null && !mobileAttr.getValues().isEmpty()) {
+                    Object first = mobileAttr.getValues().get(0);
+                    if (first != null) mobile = first.toString();
+                }
+            }
+
             if (mobile == null || mobile.trim().isEmpty()) {
-                logger.info("Personal user uid={} has no mobile attribute in Jans", personalUid);
+                logger.info("Personal user uid={} has no mobile attribute", personalUid);
                 return result;
             }
 
@@ -208,7 +216,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             result.put("inum", inum);
             result.put("mobile", mobile);
             result.put("lang", lang != null ? lang : "en");
-            logger.info("getPersonalUserDetails: returning inum={} mobile={} lang={}", inum, mobile, lang);
+            logger.info("getPersonalUserDetails: uid={} inum={} mobile={} lang={}", personalUid, inum, mobile, lang);
             return result;
         } catch (Exception ex) {
             logger.error("getPersonalUserDetails failed for uid={}: {}", personalUid, ex.getMessage(), ex);
