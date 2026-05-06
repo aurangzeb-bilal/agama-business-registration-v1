@@ -3306,7 +3306,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-b1404838-c6c9-40d5-b7c1-640e557e0dfe",
@@ -3361,7 +3361,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "This business email is already registered. Please use a different one.",
+							"assignmentExpression": "\"This business email is already registered. Please use a different one.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
@@ -3382,7 +3382,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-d84e5237-db8c-4983-b2c2-cf191ce75349",
@@ -5701,8 +5702,8 @@
 		}
 	],
 	"viewport": {
-		"x": -3099.57075497162,
-		"y": -297.4610048555346,
+		"x": -3100.57075497162,
+		"y": -92.46100485553461,
 		"zoom": 0.5
 	}
 }
