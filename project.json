@@ -16,7 +16,6 @@
     ],
     "noDirectLaunch": [],
     "configs": {
-        "org.gluu.agama.businessregistration.signup": {},
         "code": {},
         "org.gluu.agama.businessregistration.verifyphoneotp": {}
     },
