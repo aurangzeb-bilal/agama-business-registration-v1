@@ -179,10 +179,25 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     public Map<String, String> getPersonalUserDetails(String personalUid) {
         Map<String, String> result = new HashMap<>();
         try {
+            UserService userService = CdiUtil.bean(UserService.class);
+
+            // Try BOTH common load mechanisms. One of these must surface 'mobile'.
             User fullUser = getUser(UID, personalUid);
+            logger.info("DEBUG getUser(UID, {}) dn={} status={}", personalUid,
+                fullUser != null ? fullUser.getDn() : "null",
+                fullUser != null && fullUser.getStatus() != null ? fullUser.getStatus().getValue() : "null");
+
             if (fullUser == null) {
-                logger.info("Personal user not found in Jans for uid={}", personalUid);
                 return result;
+            }
+
+            // DUMP every dynamic attribute on the loaded user
+            List<CustomObjectAttribute> all = fullUser.getCustomAttributes();
+            logger.info("DEBUG customAttrs count for {}: {}", personalUid, all != null ? all.size() : -1);
+            if (all != null) {
+                for (CustomObjectAttribute a : all) {
+                    logger.info("DEBUG attr name={} value={} values={}", a.getName(), a.getValue(), a.getValues());
+                }
             }
 
             String status = getSingleValuedAttr(fullUser, "jansStatus");
@@ -191,10 +206,13 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 return result;
             }
 
-            // 'mobile' is multi-valued in the Jans schema, so getCustomAttribute().getValues() is the
-            // correct read path. getAttribute(name, true, false) returns null on multi-valued attrs.
-            UserService userService = CdiUtil.bean(UserService.class);
+            // Multi-valued read attempt
             CustomObjectAttribute mobileAttr = userService.getCustomAttribute(fullUser, "mobile");
+            logger.info("DEBUG getCustomAttribute(mobile) -> attr={} value={} values={}",
+                mobileAttr,
+                mobileAttr != null ? mobileAttr.getValue() : null,
+                mobileAttr != null ? mobileAttr.getValues() : null);
+
             String mobile = null;
             if (mobileAttr != null) {
                 if (mobileAttr.getValue() != null && !mobileAttr.getValue().isEmpty()) {
