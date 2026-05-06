@@ -3012,7 +3012,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\"",
+					"returnVariable": "ExceededTheNumberOfAttemptsAllowed",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -3020,7 +3020,8 @@
 			"measured": {
 				"width": 170,
 				"height": 123
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-08216ac6-1929-4115-b287-db63d1705584",
@@ -3055,7 +3056,7 @@
 				"width": 170,
 				"height": 123
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "assignmentNode-4fa1cbd3-1df4-4fe3-815d-2ef418ed36dd",
@@ -5707,8 +5708,8 @@
 		}
 	],
 	"viewport": {
-		"x": -7905.0727234426195,
-		"y": -857.0641642577323,
-		"zoom": 0.8977865825009942
+		"x": -4500.021659897071,
+		"y": -599.3873071432638,
+		"zoom": 0.5
 	}
 }
