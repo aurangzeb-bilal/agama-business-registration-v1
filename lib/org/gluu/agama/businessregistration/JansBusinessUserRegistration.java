@@ -132,15 +132,15 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
 
             String body = response.body() == null ? "" : response.body();
             // Lightweight regex parse — avoids pulling in JSON dependency at the Agama engine layer.
-            boolean phoneOk = body.matches("(?s).*\"phone_verified\"\\s*:\\s*true.*");
-            boolean faceOk = body.matches("(?s).*\"face_verified\"\\s*:\\s*true.*");
-            boolean kycOk = body.matches("(?s).*\"kyc_verified\"\\s*:\\s*true.*");
+            boolean phoneOk = body.matches('''(?s).*"phone_verified"\s*:\s*true.*''');
+            boolean faceOk = body.matches('''(?s).*"face_verified"\s*:\s*true.*''');
+            boolean kycOk = body.matches('''(?s).*"kyc_verified"\s*:\s*true.*''');
 
             // Extract user_id for logging + defensive cross-check.
             // mwapp's user_id is documented to match the Jans inum.
             String mwappUserId = null;
             java.util.regex.Matcher uidMatch = java.util.regex.Pattern
-                .compile("\"user_id\"\\s*:\\s*\"([^\"]+)\"")
+                .compile('''"user_id"\s*:\s*"([^"]+)"''')
                 .matcher(body);
             if (uidMatch.find()) {
                 mwappUserId = uidMatch.group(1);
@@ -524,31 +524,31 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
         LogUtils.log("Validate business inputs");
         Map<String, Object> result = new HashMap<>();
 
-        if (profile.get(UID) == null || !Pattern.matches("^[A-Za-z][A-Za-z0-9]{5,19}$", profile.get(UID))) {
+        if (profile.get(UID) == null || !Pattern.matches('''^[A-Za-z][A-Za-z0-9]{5,19}$''', profile.get(UID))) {
             result.put("valid", false);
             result.put("message", "Invalid business username. Must be 6-20 characters, start with a letter, and contain only letters and digits.");
             return result;
         }
 
-        if (profile.get(MAIL) == null || !Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", profile.get(MAIL))) {
+        if (profile.get(MAIL) == null || !Pattern.matches('''^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$''', profile.get(MAIL))) {
             result.put("valid", false);
             result.put("message", "Invalid business email address.");
             return result;
         }
 
-        if (profile.get(ORG_NAME) == null || !Pattern.matches("^[A-Za-z0-9 .&'\\-,]{2,100}$", profile.get(ORG_NAME))) {
+        if (profile.get(ORG_NAME) == null || !Pattern.matches('''^[A-Za-z0-9 .&'\-,]{2,100}$''', profile.get(ORG_NAME))) {
             result.put("valid", false);
             result.put("message", "Invalid organization name. Must be 2-100 characters using letters, digits, spaces, and . & ' - ,");
             return result;
         }
 
-        if (profile.get(LANG) == null || !Pattern.matches("^(ar|en|es|fr|pt|id)$", profile.get(LANG))) {
+        if (profile.get(LANG) == null || !Pattern.matches('''^(ar|en|es|fr|pt|id)$''', profile.get(LANG))) {
             result.put("valid", false);
             result.put("message", "Invalid language code. Must be one of ar, en, es, fr, pt, or id.");
             return result;
         }
 
-        if (profile.get(RESIDENCE_COUNTRY) == null || !Pattern.matches("^[A-Z]{2}$", profile.get(RESIDENCE_COUNTRY))) {
+        if (profile.get(RESIDENCE_COUNTRY) == null || !Pattern.matches('''^[A-Z]{2}$''', profile.get(RESIDENCE_COUNTRY))) {
             result.put("valid", false);
             result.put("message", "Invalid residence country. Must be exactly two uppercase letters.");
             return result;
@@ -598,7 +598,57 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
         return new HashMap<>();
     }
 
-    
+    @Override
+    public String addNewBusinessUser(Map<String, String> profile, String personalInum, String phone) {
+        try {
+            Set<String> attributes = Set.of("uid", "mail", "userPassword", "o", "lang", "residenceCountry");
+            User user = new User();
+
+            attributes.forEach(attr -> {
+                String val = profile.get(attr);
+                if (StringHelper.isNotEmpty(val)) {
+                    user.setAttribute(attr, val);
+                }
+            });
+
+            // If no password supplied on the form, generate a server-side random one so the LDAP entry is valid.
+            if (!StringHelper.isNotEmpty(profile.get(PASSWORD))) {
+                byte[] randomBytes = new byte[24];
+                new SecureRandom().nextBytes(randomBytes);
+                String generatedPassword = Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
+                user.setAttribute(PASSWORD, generatedPassword);
+            }
+
+            user.setAttribute(EMAIL_VERIFIED, Boolean.TRUE);
+            user.setAttribute(PHONE_VERIFIED, Boolean.FALSE);
+
+            // Multi-valued jansExtUid linkage:
+            //   businessCreator:<personalInum>  -> who created the business
+            //   businessMember:<personalInum>   -> creator is also the first employee
+            // Additional employees added later via addMemberToBusiness().
+            user.setAttribute(LINK_ATTR, java.util.List.of(
+                CREATOR_PREFIX + personalInum,
+                MEMBER_PREFIX + personalInum
+            ));
+
+            UserService userService = CdiUtil.bean(UserService.class);
+            user = userService.addUser(user, true);
+
+            if (user == null) {
+                logger.error("addNewBusinessUser: addUser returned null for uid={}", profile.get(UID));
+                return null;
+            }
+
+            return getSingleValuedAttr(user, INUM_ATTR);
+        } catch (Exception ex) {
+            // Returning null instead of throwing keeps the .flow file simple
+            // (no need for the dual-assignment "result | E = Call ..." syntax,
+            // which Agama Lab's "Create flow by code" import doesn't parse).
+            // The flow's `When businessInum is not null` check handles the failure case.
+            logger.error("addNewBusinessUser failed for uid={}: {}", profile.get(UID), ex.getMessage(), ex);
+            return null;
+        }
+    }
 
     @Override
     public String markPhoneAsVerified(String userName, String phone) {
