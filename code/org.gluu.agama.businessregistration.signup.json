@@ -3383,7 +3383,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-d84e5237-db8c-4983-b2c2-cf191ce75349",
@@ -3692,7 +3692,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Phone OTP failed. Try a different personal username.",
+							"assignmentExpression": "\"Phone OTP failed. Try a different personal username.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -3709,7 +3709,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-79670987-1948-4a15-8a6e-36c0d8b88278",
@@ -5702,8 +5703,8 @@
 		}
 	],
 	"viewport": {
-		"x": -3100.57075497162,
-		"y": -92.46100485553461,
+		"x": -1478.5707549716199,
+		"y": 469.5389951444654,
 		"zoom": 0.5
 	}
 }
