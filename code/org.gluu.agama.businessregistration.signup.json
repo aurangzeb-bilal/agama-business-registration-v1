@@ -72,7 +72,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "callNode-98da96ba-cf78-4295-8569-87fceb737d8c",
@@ -1715,12 +1715,12 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "A new OTP code has been send to your business email",
+							"assignmentExpression": "\"A new OTP code has been send to your business email\"",
 							"assignedVariableName": "uiFeedback.infoMessage"
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -1736,7 +1736,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-a74bf3a0-5417-4b44-adac-4622495b7c18",
@@ -3721,7 +3722,7 @@
 				"previousNodeId": "repeatNode-5c32f2bf-9664-4269-a34b-ac921dc10037",
 				"branching": "continue",
 				"agamaData": {
-					"logMessage": "Personal lookup loop exhausted",
+					"logMessage": "\"Personal lookup loop exhausted\"",
 					"logLevel": "error",
 					"nodeIcon": "octicon:log-16",
 					"nodeColor": "",
@@ -5695,8 +5696,8 @@
 		}
 	],
 	"viewport": {
-		"x": 229.34457036153435,
-		"y": 433.64555618037093,
+		"x": -3405.6554296384656,
+		"y": -298.35444381962907,
 		"zoom": 0.5017331844004735
 	}
 }
