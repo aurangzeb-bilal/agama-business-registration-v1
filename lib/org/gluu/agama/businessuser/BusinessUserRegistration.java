@@ -36,7 +36,7 @@ public abstract class BusinessUserRegistration {
     public abstract Map<String, Object> validateBusinessInputs(Map<String, String> profile);
     public abstract Map<String, String> getUserEntityByMail(String email);
     public abstract Map<String, String> getUserEntityByUsername(String username);
-    public abstract String addNewBusinessUser(Map<String, String> profile, String personalInum, String phone) throws Exception;
+    public abstract String addNewBusinessUser(Map<String, String> profile, String personalInum, String phone);
     public abstract String markPhoneAsVerified(String userName, String phone);
 
     public abstract boolean sendAccountCreationNotificationEmail(String to, String userName, String lang);
