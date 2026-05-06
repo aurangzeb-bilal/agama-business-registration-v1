@@ -2950,7 +2950,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-0e95173f-26dd-4a7e-a2d5-787f80f54cd9",
@@ -3072,7 +3072,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Business account creation failed. Please try again.",
+							"assignmentExpression": "\"Business account creation failed. Please try again.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -3088,7 +3088,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-bbbe27c4-4724-4af5-8693-6cd34b728bd9",
@@ -5697,8 +5698,8 @@
 		}
 	],
 	"viewport": {
-		"x": -5581.655429638466,
-		"y": -425.35444381962907,
-		"zoom": 0.5017331844004735
+		"x": -8282.789497755959,
+		"y": -1110.2788817457124,
+		"zoom": 0.8671432672452886
 	}
 }
