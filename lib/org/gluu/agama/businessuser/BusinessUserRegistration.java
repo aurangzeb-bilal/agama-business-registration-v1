@@ -8,12 +8,6 @@ import org.gluu.agama.businessregistration.JansBusinessUserRegistration;
 
 public abstract class BusinessUserRegistration {
 
-    // MWAPP gate.
-    // GET https://api.phiwallet.dev/v1/webhooks/users/{username}
-    //   X-AUTH-CLIENT: <public-key>
-    //   X-HMAC-SIGNATURE: hmac-sha256(username, secretKey).hex.lowercase
-    // Response: { "phone_verified": true|false, "face_verified": true|false, "kyc_verified": true|false }
-    // Returns true only when ALL three are true. False on any other outcome.
     public abstract boolean isPersonalVerified(String personalUid);
 
     // Jans lookup for the personal user — needed to obtain mobile + lang for sending the OTP.
