@@ -1737,7 +1737,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-a74bf3a0-5417-4b44-adac-4622495b7c18",
@@ -2932,7 +2932,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Phone confirmation failed. Try once more.",
+							"assignmentExpression": "\"Phone confirmation failed. Try once more.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -2949,7 +2949,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-0e95173f-26dd-4a7e-a2d5-787f80f54cd9",
@@ -5696,8 +5697,8 @@
 		}
 	],
 	"viewport": {
-		"x": -3405.6554296384656,
-		"y": -298.35444381962907,
+		"x": -5581.655429638466,
+		"y": -425.35444381962907,
 		"zoom": 0.5017331844004735
 	}
 }
