@@ -132,15 +132,15 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
 
             String body = response.body() == null ? "" : response.body();
             // Lightweight regex parse — avoids pulling in JSON dependency at the Agama engine layer.
-            boolean phoneOk = body.matches('''(?s).*"phone_verified"\s*:\s*true.*''');
-            boolean faceOk = body.matches('''(?s).*"face_verified"\s*:\s*true.*''');
-            boolean kycOk = body.matches('''(?s).*"kyc_verified"\s*:\s*true.*''');
+            boolean phoneOk = body.matches('''(?s).*"phone_verified"\\s*:\\s*true.*''');
+            boolean faceOk = body.matches('''(?s).*"face_verified"\\s*:\\s*true.*''');
+            boolean kycOk = body.matches('''(?s).*"kyc_verified"\\s*:\\s*true.*''');
 
             // Extract user_id for logging + defensive cross-check.
             // mwapp's user_id is documented to match the Jans inum.
             String mwappUserId = null;
             java.util.regex.Matcher uidMatch = java.util.regex.Pattern
-                .compile('''"user_id"\s*:\s*"([^"]+)"''')
+                .compile('''"user_id"\\s*:\\s*"([^"]+)"''')
                 .matcher(body);
             if (uidMatch.find()) {
                 mwappUserId = uidMatch.group(1);
@@ -530,13 +530,13 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             return result;
         }
 
-        if (profile.get(MAIL) == null || !Pattern.matches('''^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$''', profile.get(MAIL))) {
+        if (profile.get(MAIL) == null || !Pattern.matches('''^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$''', profile.get(MAIL))) {
             result.put("valid", false);
             result.put("message", "Invalid business email address.");
             return result;
         }
 
-        if (profile.get(ORG_NAME) == null || !Pattern.matches('''^[A-Za-z0-9 .&'\-,]{2,100}$''', profile.get(ORG_NAME))) {
+        if (profile.get(ORG_NAME) == null || !Pattern.matches('''^[-A-Za-z0-9 .&',]{2,100}$''', profile.get(ORG_NAME))) {
             result.put("valid", false);
             result.put("message", "Invalid organization name. Must be 2-100 characters using letters, digits, spaces, and . & ' - ,");
             return result;
