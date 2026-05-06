@@ -598,47 +598,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
         return new HashMap<>();
     }
 
-    @Override
-    public String addNewBusinessUser(Map<String, String> profile, String personalInum, String phone) throws Exception {
-        Set<String> attributes = Set.of("uid", "mail", "userPassword", "o", "lang", "residenceCountry");
-        User user = new User();
-
-        attributes.forEach(attr -> {
-            String val = profile.get(attr);
-            if (StringHelper.isNotEmpty(val)) {
-                user.setAttribute(attr, val);
-            }
-        });
-
-        // If no password supplied on the form, generate a server-side random one so the LDAP entry is valid.
-        if (!StringHelper.isNotEmpty(profile.get(PASSWORD))) {
-            byte[] randomBytes = new byte[24];
-            new SecureRandom().nextBytes(randomBytes);
-            String generatedPassword = Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
-            user.setAttribute(PASSWORD, generatedPassword);
-        }
-
-        user.setAttribute(EMAIL_VERIFIED, Boolean.TRUE);
-        user.setAttribute(PHONE_VERIFIED, Boolean.FALSE);
-
-        // Multi-valued jansExtUid linkage:
-        //   businessCreator:<personalInum>  → who created the business
-        //   businessMember:<personalInum>   → creator is also the first employee
-        // Additional employees added later via addMemberToBusiness().
-        user.setAttribute(LINK_ATTR, java.util.List.of(
-            CREATOR_PREFIX + personalInum,
-            MEMBER_PREFIX + personalInum
-        ));
-
-        UserService userService = CdiUtil.bean(UserService.class);
-        user = userService.addUser(user, true);
-
-        if (user == null) {
-            throw new EntryNotFoundException("Added business user not found");
-        }
-
-        return getSingleValuedAttr(user, INUM_ATTR);
-    }
+    
 
     @Override
     public String markPhoneAsVerified(String userName, String phone) {
