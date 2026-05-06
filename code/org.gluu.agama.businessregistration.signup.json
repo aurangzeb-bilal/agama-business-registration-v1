@@ -392,7 +392,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Please use a verified account",
+							"assignmentExpression": "\"Please use a verified account\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -408,7 +408,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "callNode-98f906ec-0182-46be-a372-1ccb40e70215",
@@ -3710,7 +3711,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-79670987-1948-4a15-8a6e-36c0d8b88278",
@@ -5703,8 +5704,8 @@
 		}
 	],
 	"viewport": {
-		"x": -1478.5707549716199,
-		"y": 469.5389951444654,
+		"x": -547.5707549716199,
+		"y": 330.5389951444654,
 		"zoom": 0.5
 	}
 }
