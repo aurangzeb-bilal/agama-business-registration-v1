@@ -3234,7 +3234,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-91cf0f18-84c8-4a65-a280-1f1624ebd3fa",
@@ -3289,7 +3289,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "This business username is already taken. Please choose a different one.",
+							"assignmentExpression": "\"This business username is already taken. Please choose a different one.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -3305,7 +3305,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-b1404838-c6c9-40d5-b7c1-640e557e0dfe",
@@ -5700,8 +5701,8 @@
 		}
 	],
 	"viewport": {
-		"x": -3721.57075497162,
-		"y": -448.4610048555346,
+		"x": -3099.57075497162,
+		"y": -297.4610048555346,
 		"zoom": 0.5
 	}
 }
