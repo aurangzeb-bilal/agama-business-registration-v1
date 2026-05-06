@@ -1922,7 +1922,7 @@
 				"width": 170,
 				"height": 123
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "whenNode-3d8fb225-ce8f-439c-8c1b-184b79f44d29",
@@ -2018,13 +2018,11 @@
 				"previousNodeId": "logNode-c02aadcc-d95d-40be-8d52-da32167a42dc",
 				"agamaData": {
 					"javaClassName": "",
-					"javaMethodName": "Call",
-					"javaVariableName": "=",
+					"javaMethodName": "addNewBusinessUser",
+					"javaVariableName": "service",
 					"exceptionVariableField": "",
 					"callType": "Call method on instance",
 					"arguments": [
-						"service",
-						"addNewBusinessUser",
 						"businessProfile",
 						"personalInum",
 						"personalPhone"
@@ -2042,7 +2040,8 @@
 			"measured": {
 				"width": 170,
 				"height": 123
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "whenNode-73a3a725-db4e-4ac1-a8dd-af5cf133c1fb",
@@ -5707,8 +5706,8 @@
 		}
 	],
 	"viewport": {
-		"x": -4318.767350629194,
-		"y": -366.01726740864956,
-		"zoom": 0.5391986882095043
+		"x": -7905.0727234426195,
+		"y": -857.0641642577323,
+		"zoom": 0.8977865825009942
 	}
 }
