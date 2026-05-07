@@ -566,7 +566,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
              result.put("valid", false);
              result.put("message", "Invalid password. Must be at least 12 to 24 characters with uppercase, lowercase, digit, and special character.");
              return result;
-    }
+        }
         if (profile.get(ORG_NAME) == null || !Pattern.matches('''^[-A-Za-z0-9 .&',]{2,100}$''', profile.get(ORG_NAME))) {
             result.put("valid", false);
             result.put("message", "Invalid organization name. Must be 2-100 characters using letters, digits, spaces, and . & ' - ,");
@@ -582,6 +582,11 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
         if (profile.get(RESIDENCE_COUNTRY) == null || !Pattern.matches('''^[A-Z]{2}$''', profile.get(RESIDENCE_COUNTRY))) {
             result.put("valid", false);
             result.put("message", "Invalid residence country. Must be exactly two uppercase letters.");
+            return result;
+        }
+        if (!profile.get(PASSWORD).equals(profile.get(CONFIRM_PASSWORD))) {
+            result.put("valid", false);
+            result.put("message", "Password and confirm password do not match.");
             return result;
         }
 
@@ -641,14 +646,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                     user.setAttribute(attr, val);
                 }
             });
-
-            // If no password supplied on the form, generate a server-side random one so the LDAP entry is valid.
-            if (!StringHelper.isNotEmpty(profile.get(PASSWORD))) {
-                byte[] randomBytes = new byte[24];
-                new SecureRandom().nextBytes(randomBytes);
-                String generatedPassword = Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
-                user.setAttribute(PASSWORD, generatedPassword);
-            }
 
             user.setAttribute(EMAIL_VERIFIED, Boolean.TRUE);
             user.setAttribute(PHONE_VERIFIED, Boolean.FALSE);
