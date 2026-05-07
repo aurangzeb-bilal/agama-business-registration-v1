@@ -44,7 +44,7 @@ Repeat 3 times max
                     uiFeedback.errorMessage = ""
                     uiFeedback.infoMessage = ""
                     //  Step 6+: business profile entry loop - 6 attempts max
-                    Repeat 3 times max
+                    Repeat 4 times max
                          businessProfile = RRF "businessProfile.ftlh" uiFeedback
                          validation = Call service validateBusinessInputs businessProfile
                          Log "@info Business profile validation: % , % , %" validation validation.valid validation.message
@@ -68,8 +68,8 @@ Repeat 3 times max
                                                   Log "@info Business email OTP resend requested"
                                                   When emailResendCount is 3
                                                        Log "@error Email OTP resend exceeded"
-                                                       it_jfiyv = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                                       Finish it_jfiyv
+                                                       it_ledmn = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                                       Finish it_ledmn
                                                   emailResendCount = Call org.gluu.agama.newregistration.CounterHelper#increment emailResendCount
                                                   Log "@info Email resend attempt: " emailResendCount
                                                   emailOtpCode = Call service sendEmail businessProfile.mail businessProfile.lang
@@ -80,8 +80,8 @@ Repeat 3 times max
                                                   emailValidationAttempts = Call org.gluu.agama.newregistration.CounterHelper#increment emailValidationAttempts
                                                   When emailValidationAttempts is 4
                                                        Log "@error Email OTP validation exceeded"
-                                                       it_xmdyh = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                                       Finish it_xmdyh
+                                                       it_wzcfh = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                                       Finish it_wzcfh
                                                   Otherwise
                                                        When emailOtpCreds.passcode is emailOtpCode
                                                             Log "@info Business email OTP verified - creating business user"
@@ -120,8 +120,8 @@ Repeat 3 times max
                                                                                 Finish secondOtpResult
                                                                            uiFeedback.errorMessage = "Phone confirmation failed. Try once more."
                                                                  Log "@error Confirmation phone loop exhausted"
-                                                                 it_bpmxk = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                                                 Finish it_bpmxk
+                                                                 it_qhqzb = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                                                 Finish it_qhqzb
                                                             //  Business creation failed - log and let outer loop retry profile entry
                                                             Log "@error @error Business user creation failed - returned null"
                                                             uiFeedback.errorMessage = "Business account creation failed. Please try again."
@@ -131,18 +131,20 @@ Repeat 3 times max
                                                             uiFeedback.infoMessage = ""
                                         //  Email loop fell through without Finish - exhausted
                                         Log "@error Email OTP loop completed without success"
-                                        it_deayz = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                        Finish it_deayz
+                                        it_dtwhi = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                        Finish it_dtwhi
                                    Otherwise
                                         Log "@error Business username already taken: " businessProfile.uid
                                         uiFeedback.errorMessage = "This business username is already taken. Please choose a different one."
                               Otherwise
                                    Log "@error Business email already in use: " businessProfile.mail
                                    uiFeedback.errorMessage = "This business email is already registered. Please use a different one."
+                         Otherwise
+                              uiFeedback.errorMessage = validation.message
                     //  Business profile loop exhausted (6 attempts)
                     Log "@error Business profile loop exhausted"
-                    it_pinke = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                    Finish it_pinke
+                    it_vskcl = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                    Finish it_vskcl
                Otherwise
                     //  First OTP failed - surface specific subflow errors immediately
                     When firstOtpResult.error is "ExceededTheNumberOfAttemptsAllowed"
@@ -154,5 +156,5 @@ Repeat 3 times max
                     uiFeedback.errorMessage = "Phone OTP failed. Try a different personal username."
 //  Outer Repeat (5 attempts) exhausted without successful gate + OTP
 Log "@error Personal lookup loop exhausted"
-it_fmnuw = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-Finish it_fmnuw
+it_piuwi = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+Finish it_piuwi
