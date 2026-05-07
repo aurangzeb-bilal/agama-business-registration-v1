@@ -627,7 +627,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     @Override
     public String addNewBusinessUser(Map<String, String> profile, String personalInum, String phone) {
         try {
-            Set<String> attributes = Set.of("uid", "mail", "userPassword", "o", "lang", "residenceCountry");
+            Set<String> attributes = Set.of("uid", "mail", "userPassword", "businessName", "lang", "residenceCountry");
             User user = new User();
 
             attributes.forEach(attr -> {
