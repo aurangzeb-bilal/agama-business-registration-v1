@@ -40,12 +40,12 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     private static final String LANG = "lang";
     private static final String RESIDENCE_COUNTRY = "residenceCountry";
     private static final String PHONE_NUMBER = "telephoneNumber"; // business phone — distinct from personal "mobile"
-    private static final String ORG_NAME = "o";
+    private static final String ORG_NAME = "businessNam";
     private static final String MAIL = "mail";
     private static final String UID = "uid";
     private static final String PASSWORD = "userPassword";
     private static final String INUM_ATTR = "inum";
-    private static final String LINK_ATTR = "jansExtUid";
+    private static final String LINK_ATTR = "businessLink";
     private static final String CREATOR_PREFIX = "businessCreator:";
     private static final String MEMBER_PREFIX = "businessMember:";
     private static final String EMAIL_VERIFIED = "emailVerified";
