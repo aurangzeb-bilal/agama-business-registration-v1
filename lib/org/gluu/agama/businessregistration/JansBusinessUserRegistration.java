@@ -40,7 +40,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     private static final String LANG = "lang";
     private static final String RESIDENCE_COUNTRY = "residenceCountry";
     private static final String PHONE_NUMBER = "telephoneNumber"; // business phone — distinct from personal "mobile"
-    private static final String ORG_NAME = "businessNam";
+    private static final String ORG_NAME = "businessName";
     private static final String MAIL = "mail";
     private static final String UID = "uid";
     private static final String PASSWORD = "userPassword";
