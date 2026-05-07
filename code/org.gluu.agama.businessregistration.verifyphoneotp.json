@@ -35,7 +35,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-1238aa3f-ed8a-4939-8440-bb1bdceb06aa",
@@ -104,12 +104,12 @@
 						{
 							"variableTypeCheck": true,
 							"assignmentExpression": "\"\"",
-							"assignedVariableName": "uiFeedback.errorMessage"
+							"assignedVariableName": "otpUiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": true,
 							"assignmentExpression": "\"\"",
-							"assignedVariableName": "uiFeedback.infoMessage"
+							"assignedVariableName": "otpUiFeedback.infoMessage"
 						}
 					],
 					"nodeIcon": "material-symbols:equal",
@@ -125,7 +125,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": false
+			"selected": true
 		},
 		{
 			"id": "repeatNode-46785125-4ade-4900-a32a-09540bf73cc0",
@@ -1844,8 +1844,8 @@
 		}
 	],
 	"viewport": {
-		"x": -101.9600621194636,
-		"y": 329.5581126104829,
-		"zoom": 0.8316553116887646
+		"x": 374,
+		"y": 184,
+		"zoom": 1
 	}
 }
