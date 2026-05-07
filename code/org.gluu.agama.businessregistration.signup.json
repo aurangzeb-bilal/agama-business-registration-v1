@@ -340,7 +340,8 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-a86e05cf-0f6f-490e-ac84-1a951ca6fd40",
@@ -413,7 +414,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": false
+			"selected": true
 		},
 		{
 			"id": "callNode-98f906ec-0182-46be-a372-1ccb40e70215",
@@ -577,8 +578,8 @@
 			"id": "logNode-832d5733-e30c-477a-abe3-afedceb0e6cc",
 			"type": "logNode",
 			"position": {
-				"x": 2351.672043838088,
-				"y": -200.5937052700869
+				"x": 2585.622657385081,
+				"y": -294.47197694817964
 			},
 			"data": {
 				"id": "logNode-832d5733-e30c-477a-abe3-afedceb0e6cc",
@@ -3907,7 +3908,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "assignmentNode-3ca6258d-3d75-430d-b726-93d6eddbf1ec",
@@ -5986,8 +5987,8 @@
 		}
 	],
 	"viewport": {
-		"x": -1337.3028439387326,
-		"y": 116.7732799620187,
-		"zoom": 0.6023766667545863
+		"x": -842.285948063701,
+		"y": 152.37519070720117,
+		"zoom": 0.6710818049146249
 	}
 }
