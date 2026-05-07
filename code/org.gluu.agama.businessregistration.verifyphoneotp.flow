@@ -8,6 +8,8 @@ Log "@info Information received from the caller: " phone lang verificationMethod
 otpUiFeedback = {}
 resendCount = 0
 validationAttempts = 0
+uiFeedback.errorMessage = ""
+uiFeedback.infoMessage = ""
 Repeat 20 times max
      //   Show UI to collect OTP code from user.
      otpCreds = RRF "smsOtp.ftlh" otpUiFeedback
@@ -17,8 +19,8 @@ Repeat 20 times max
           When resendCount is 3
                //  Maximum resend attempts exceeded
                Log "@info Maximum resend attempts exceeded"
-               it_iagpk = {success:false, error: "ExceededResendAttempts"}
-               Finish it_iagpk
+               it_bkfcs = {success:false, error: "ExceededResendAttempts"}
+               Finish it_bkfcs
           resendCount = Call org.gluu.agama.newregistration.CounterHelper#increment resendCount
           //  Resend attempt number
           Log "@info Resend attempt number: " resendCount
@@ -43,8 +45,8 @@ Repeat 20 times max
           When validationAttempts is 4
                //  Log validation exceeded
                Log "@info Maximum validation attempts exceeded"
-               it_fmsoh = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-               Finish it_fmsoh
+               it_hojhr = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+               Finish it_hojhr
           Otherwise
                //   Validate the OTP code provided by the user.
                otpValidationResult = Call userRegistrationService validateOTPCode phone otpCreds.code
@@ -58,5 +60,5 @@ Repeat 20 times max
                     otpUiFeedback.errorMessage = "Invalid code provided."
 //  OTP verification loop completed
 Log "@info OTP verification loop completed"
-it_mfabe = {success:false, error: "UnexpectedLoopCompletion"}
-Finish it_mfabe
+it_lhrdh = {success:false, error: "UnexpectedLoopCompletion"}
+Finish it_lhrdh
