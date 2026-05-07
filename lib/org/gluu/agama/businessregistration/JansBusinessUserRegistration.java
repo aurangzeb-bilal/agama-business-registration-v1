@@ -581,7 +581,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
         }
 
         result.put("valid", true);
-        result.put("message", "All inputs are valid.");
+        result.put("message", "");
         return result;
     }
 
