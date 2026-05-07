@@ -9,24 +9,14 @@ import org.gluu.agama.businessregistration.JansBusinessUserRegistration;
 public abstract class BusinessUserRegistration {
 
     public abstract boolean isPersonalVerified(String personalUid);
-
-    // Jans lookup for the personal user — needed to obtain mobile + lang for sending the OTP.
-    // Returns {inum, mobile, lang} only when:
-    //   - user exists
-    //   - jansStatus == "active"
-    //   - mobile attribute is non-empty
-    // Returns an empty Map otherwise (caller surfaces "Please use a verified account").
-    // Note: phoneNumberVerified is NOT checked here — MWAPP's phone_verified is the authoritative source.
     public abstract Map<String, String> getPersonalUserDetails(String personalUid);
 
-    // OTP send/validate (shared between personal-phone and business-phone OTPs).
     public abstract String sendOTPCode(String phone, String lang, String verificationMethod);
     public abstract boolean validateOTPCode(String phone, String code);
 
-    // Email OTP for business email.
     public abstract String sendEmail(String to, String lang);
 
-    // Business profile validation + creation.
+
     public abstract Map<String, Object> validateBusinessInputs(Map<String, String> profile);
     public abstract Map<String, String> getUserEntityByMail(String email);
     public abstract Map<String, String> getUserEntityByUsername(String username);
