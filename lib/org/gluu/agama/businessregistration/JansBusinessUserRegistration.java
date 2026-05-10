@@ -56,16 +56,16 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
 
     private static JansBusinessUserRegistration INSTANCE = null;
     private Map<String, String> flowConfig;
-    private static final Map<String, String> userCodes = new HashMap<>();
+    private static final Map<String, String> userCodes      = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, Long>   userCodeExpiry = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, long[]> sendCounts     = new java.util.concurrent.ConcurrentHashMap<>();
 
     public JansBusinessUserRegistration() {
         this.flowConfig = new HashMap<>();
-        logger.info("Initialized JansBusinessUserRegistration with empty config");
     }
 
     public JansBusinessUserRegistration(Map<String, String> config) {
         this.flowConfig = config;
-        logger.info("JansBusinessUserRegistration initialized. Twilio account SID configured: {}", config.get("ACCOUNT_SID") != null);
     }
 
     public static synchronized BusinessUserRegistration getInstance() {
@@ -103,6 +103,8 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 logger.error("personalUid is null/empty");
                 return false;
             }
+            logger.info("MWAPP gate check uid={}", personalUid);
+
 
             // HMAC-SHA256(username, secretKey).hex.lowercase
             javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA256");
@@ -126,9 +128,12 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 .GET()
                 .build();
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            logger.info("MWAPP API status={} body={}", response.statusCode(), response.body());
+            
 
-            if (response.statusCode() != 200) return false;
+            if (response.statusCode() != 200) {
+                logger.warn("MWAPP gate non-200 for uid={} status={}", personalUid, response.statusCode());
+                return false;
+            }
 
             String body = response.body() == null ? "" : response.body();
             // Lightweight regex parse — avoids pulling in JSON dependency at the Agama engine layer.
@@ -181,39 +186,22 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
         try {
             UserService userService = CdiUtil.bean(UserService.class);
 
-            // Try BOTH common load mechanisms. One of these must surface 'mobile'.
             User fullUser = getUser(UID, personalUid);
-            logger.info("DEBUG getUser(UID, {}) dn={} status={}", personalUid,
-                fullUser != null ? fullUser.getDn() : "null",
-                fullUser != null && fullUser.getStatus() != null ? fullUser.getStatus().getValue() : "null");
-
             if (fullUser == null) {
                 return result;
             }
 
-            // DUMP every dynamic attribute on the loaded user
-            List<CustomObjectAttribute> all = fullUser.getCustomAttributes();
-            logger.info("DEBUG customAttrs count for {}: {}", personalUid, all != null ? all.size() : -1);
-            if (all != null) {
-                for (CustomObjectAttribute a : all) {
-                    logger.info("DEBUG attr name={} value={} values={}", a.getName(), a.getValue(), a.getValues());
-                }
-            }
-
             String status = getSingleValuedAttr(fullUser, "jansStatus");
+
             if (status != null && !"active".equalsIgnoreCase(status)) {
                 logger.info("Personal user uid={} not active (status={})", personalUid, status);
                 return result;
             }
 
-            // Multi-valued read attempt
             CustomObjectAttribute mobileAttr = userService.getCustomAttribute(fullUser, "mobile");
-            logger.info("DEBUG getCustomAttribute(mobile) -> attr={} value={} values={}",
-                mobileAttr,
-                mobileAttr != null ? mobileAttr.getValue() : null,
-                mobileAttr != null ? mobileAttr.getValues() : null);
 
             String mobile = null;
+
             if (mobileAttr != null) {
                 if (mobileAttr.getValue() != null && !mobileAttr.getValue().isEmpty()) {
                     mobile = mobileAttr.getValue();
@@ -234,8 +222,8 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             result.put("inum", inum);
             result.put("mobile", mobile);
             result.put("lang", lang != null ? lang : "en");
-            logger.info("getPersonalUserDetails: uid={} inum={} mobile={} lang={}", personalUid, inum, mobile, lang);
             return result;
+
         } catch (Exception ex) {
             logger.error("getPersonalUserDetails failed for uid={}: {}", personalUid, ex.getMessage(), ex);
             return result;
@@ -249,10 +237,15 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     @Override
     public String sendOTPCode(String phone, String lang, String verificationMethod) {
         try {
-            logger.info("Sending OTP to phone: {} via {}", phone, verificationMethod);
+            if (!canSendOTP(phone)) {
+                logger.warn("OTP send rate-limited phone=...{} (>= {}/window)",
+                            lastFour(phone), maxSendsPerHour());
+                return null;
+            }
+            logger.info("OTP send phone=...{} lang={} method={}",
+                        lastFour(phone), lang, verificationMethod);
 
             String otpCode = generateSMSOTpCode(OTP_CODE_LENGTH);
-            logger.info("Generated OTP {} for phone {}", otpCode, phone);
 
             String preferredLang = (lang != null && !lang.isEmpty()) ? lang.toLowerCase() : "en";
 
@@ -289,6 +282,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     private boolean associateGeneratedCodeToPhone(String phone, String code) {
         try {
             userCodes.put(phone, code);
+            userCodeExpiry.put(phone, System.currentTimeMillis() + otpTtlMs());
             return true;
         } catch (Exception e) {
             logger.error("Error associating OTP for phone {}: {}", phone, e.getMessage(), e);
@@ -314,9 +308,9 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 }
                 fromNumber = "whatsapp:" + fromNumber;
                 phone = "whatsapp:" + phone;
-                logger.info("Using WhatsApp channel for OTP delivery");
-
+                
                 String contentSid = getWhatsAppContentSid(lang);
+
                 if (contentSid == null || contentSid.trim().isEmpty()) {
                     logger.error("No WhatsApp content SID for lang={}", lang);
                     return false;
@@ -344,23 +338,19 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 HttpResponse<String> response = HttpClient.newHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
-                logger.info("Twilio WhatsApp API status={} body={}", response.statusCode(), response.body());
-
                 if (response.statusCode() < 200 || response.statusCode() >= 300) {
-                    logger.error("WhatsApp send failed: {}", response.body());
+                    logger.error("WhatsApp send failed: status={} body={}", response.statusCode(), response.body());
                     return false;
                 }
             } else {
                 PhoneNumber FROM_NUMBER = new com.twilio.type.PhoneNumber(fromNumber);
-                logger.info("Sending from: {}", fromNumber);
                 PhoneNumber TO_NUMBER = new com.twilio.type.PhoneNumber(phone);
-                logger.info("Sending to: {}", phone);
                 Twilio.init(flowConfig.get("ACCOUNT_SID"), flowConfig.get("AUTH_TOKEN"));
                 Message.creator(TO_NUMBER, FROM_NUMBER, message).create();
             }
 
-            logger.info("OTP successfully sent to {}", phone);
             return true;
+
         } catch (Exception exception) {
             logger.error("Error sending OTP to {}: {}", phone, exception.getMessage(), exception);
             return false;
@@ -371,7 +361,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
         String suffix = (lang != null && !lang.isEmpty()) ? lang.toUpperCase() : "EN";
         String sid = flowConfig.get("WHATSAPP_CONTENT_SID_" + suffix);
         if (sid == null || sid.trim().isEmpty()) {
-            logger.info("No WhatsApp SID for lang {}, falling back to EN", suffix);
             sid = flowConfig.get("WHATSAPP_CONTENT_SID_EN");
         }
         return sid;
@@ -459,12 +448,26 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     @Override
     public boolean validateOTPCode(String phone, String code) {
         try {
-            String storedCode = userCodes.getOrDefault(phone, "NULL");
-            if (storedCode.equalsIgnoreCase(code)) {
-                userCodes.remove(phone);
-                return true;
+            String storedCode = userCodes.get(phone);
+            Long expiresAt    = userCodeExpiry.get(phone);
+
+            if (storedCode == null || expiresAt == null) {
+                logger.info("OTP validate phone=...{} result=miss", lastFour(phone));
+                return false;
             }
-            return false;
+            if (System.currentTimeMillis() > expiresAt) {
+                userCodes.remove(phone);
+                userCodeExpiry.remove(phone);
+                logger.info("OTP validate phone=...{} result=expired", lastFour(phone));
+                return false;
+            }
+            boolean ok = storedCode.equalsIgnoreCase(code);
+            if (ok) {
+                userCodes.remove(phone);
+                userCodeExpiry.remove(phone);
+            }
+            logger.info("OTP validate phone=...{} result={}", lastFour(phone), ok ? "ok" : "wrong");
+            return ok;
         } catch (Exception ex) {
             logger.error("Error validating OTP for phone {}: {}", phone, ex.getMessage(), ex);
             return false;
@@ -547,7 +550,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
 
     @Override
     public Map<String, Object> validateBusinessInputs(Map<String, String> profile) {
-        LogUtils.log("Validate business inputs");
         Map<String, Object> result = new HashMap<>();
 
         if (profile.get(UID) == null || !Pattern.matches('''^[A-Za-z][A-Za-z0-9]{5,19}$''', profile.get(UID))) {
@@ -599,7 +601,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     public Map<String, String> getUserEntityByMail(String email) {
         User user = getUser(MAIL, email);
         boolean local = user != null;
-        LogUtils.log("There is % local account for %", local ? "a" : "no", email);
 
         if (local) {
             String uid = getSingleValuedAttr(user, UID);
@@ -618,7 +619,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     public Map<String, String> getUserEntityByUsername(String username) {
         User user = getUser(UID, username);
         boolean local = user != null;
-        LogUtils.log("There is % local account for %", local ? "a" : "no", username);
 
         if (local) {
             String email = getSingleValuedAttr(user, MAIL);
@@ -692,7 +692,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             user.setAttribute(PHONE_VERIFIED, Boolean.TRUE);
 
             userService.updateUser(user);
-            logger.info("Phone verification set to TRUE for UID {}", userName);
+            
             return "Phone " + phone + " verified successfully for user " + userName;
         } catch (Exception e) {
             logger.error("Error marking phone verified for {}: {}", userName, e.getMessage(), e);
@@ -836,6 +836,47 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     // ---------------------------------------------------------------
     // Helpers
     // ---------------------------------------------------------------
+
+    // Reads a non-negative long from flowConfig with a default fallback.
+    private long configLong(String key, long defaultValue) {
+        try {
+            String v = flowConfig.get(key);
+            if (v == null || v.trim().isEmpty()) return defaultValue;
+            return Long.parseLong(v.trim());
+        } catch (NumberFormatException e) {
+            logger.warn("Invalid {} in config (not a number); using default {}", key, defaultValue);
+            return defaultValue;
+        }
+    }
+
+    private long otpTtlMs()        { return configLong("OTP_TTL_SECONDS", 600L) * 1000L; }
+    private long sendWindowMs()    { return configLong("OTP_SEND_WINDOW_SECONDS", 3600L) * 1000L; }
+    private int  maxSendsPerHour() { return (int) configLong("OTP_MAX_SENDS_PER_HOUR", 8L); }
+
+    // Per-phone send-rate gate. Returns false if the phone has already used
+    // its quota for the current window; increments the counter on success.
+    private boolean canSendOTP(String phone) {
+        long now = System.currentTimeMillis();
+        long[] entry = sendCounts.get(phone);
+        if (entry == null || now - entry[1] > sendWindowMs()) {
+            entry = new long[] { 0L, now };
+            sendCounts.put(phone, entry);
+        }
+        if (entry[0] >= maxSendsPerHour()) {
+            return false;
+        }
+        entry[0]++;
+        return true;
+    }
+
+    // Phone-suffix masking for audit logs. Strips +/whatsapp: prefixes.
+    private static String lastFour(String phone) {
+        if (phone == null) return "????";
+        String s = phone;
+        if (s.startsWith("whatsapp:")) s = s.substring("whatsapp:".length());
+        if (s.startsWith("+"))         s = s.substring(1);
+        return s.length() <= 4 ? s : s.substring(s.length() - 4);
+    }
 
     private String getSingleValuedAttr(User user, String attribute) {
         Object value = null;
