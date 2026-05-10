@@ -13,6 +13,7 @@ public abstract class BusinessUserRegistration {
 
     public abstract String sendOTPCode(String phone, String lang, String verificationMethod);
     public abstract boolean validateOTPCode(String phone, String code);
+    
 
     public abstract String sendEmail(String to, String lang);
 
