@@ -56,9 +56,11 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
 
     private static JansBusinessUserRegistration INSTANCE = null;
     private Map<String, String> flowConfig;
-    private static final Map<String, String> userCodes      = new java.util.concurrent.ConcurrentHashMap<>();
-    private static final Map<String, Long>   userCodeExpiry = new java.util.concurrent.ConcurrentHashMap<>();
-    private static final Map<String, long[]> sendCounts     = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, String> userCodes       = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, Long>   userCodeExpiry  = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, String> emailCodes      = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, Long>   emailCodeExpiry = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, long[]> sendCounts      = new java.util.concurrent.ConcurrentHashMap<>();
 
     public JansBusinessUserRegistration() {
         this.flowConfig = new HashMap<>();
@@ -479,13 +481,48 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     // ---------------------------------------------------------------
 
     @Override
+    public boolean validateEmailOTP(String email, String code) {
+        try {
+            String storedCode = emailCodes.get(email);
+            Long expiresAt    = emailCodeExpiry.get(email);
+
+            if (storedCode == null || expiresAt == null) {
+                logger.info("Email OTP validate to={} result=miss", email);
+                return false;
+            }
+            if (System.currentTimeMillis() > expiresAt) {
+                emailCodes.remove(email);
+                emailCodeExpiry.remove(email);
+                logger.info("Email OTP validate to={} result=expired", email);
+                return false;
+            }
+            boolean ok = storedCode.equalsIgnoreCase(code);
+            if (ok) {
+                emailCodes.remove(email);
+                emailCodeExpiry.remove(email);
+            }
+            logger.info("Email OTP validate to={} result={}", email, ok ? "ok" : "wrong");
+            return ok;
+        } catch (Exception ex) {
+            logger.error("Error validating email OTP for {}: {}", email, ex.getMessage(), ex);
+            return false;
+        }
+    }
+
+    @Override
     public String sendEmail(String to, String lang) {
         try {
+            if (!canSendOTP(to)) {
+                logger.warn("Email OTP rate-limited to={} (>= {}/window)", to, maxSendsPerHour());
+                return null;
+            }
+            logger.info("Email OTP send to={} lang={}", to, lang);
+
             ConfigurationService configService = CdiUtil.bean(ConfigurationService.class);
             SmtpConfiguration smtpConfig = configService.getConfiguration().getSmtpConfiguration();
 
             if (smtpConfig == null) {
-                LogUtils.log("SMTP configuration is missing.");
+                logger.error("SMTP configuration is missing.");
                 return null;
             }
 
@@ -532,14 +569,17 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                     htmlBody);
 
             if (sent) {
-                LogUtils.log("Business email OTP sent to %", to);
-                return otp;
+                emailCodes.put(to, otp);
+                emailCodeExpiry.put(to, System.currentTimeMillis() + otpTtlMs());
+                // Return the recipient (NOT the OTP). Flow uses this to detect send success
+                // and routes validation through validateEmailOTP for TTL + one-time use enforcement.
+                return to;
             } else {
-                LogUtils.log("Failed to send business email OTP to %", to);
+                logger.error("Failed to send business email OTP to {}", to);
                 return null;
             }
         } catch (Exception e) {
-            LogUtils.log("Failed to send business email OTP: %", e.getMessage());
+            logger.error("Failed to send business email OTP to {}: {}", to, e.getMessage(), e);
             return null;
         }
     }
