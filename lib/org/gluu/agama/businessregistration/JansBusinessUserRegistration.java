@@ -512,13 +512,10 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     @Override
     public String sendEmail(String to, String lang) {
         try {
-            if (!canSendOTP(to)) {
-                logger.warn("Email OTP rate-limited to={} (>= {}/window)", to, maxSendsPerHour());
-                return null;
-            }
             logger.info("Email OTP send to={} lang={}", to, lang);
 
             ConfigurationService configService = CdiUtil.bean(ConfigurationService.class);
+
             SmtpConfiguration smtpConfig = configService.getConfiguration().getSmtpConfiguration();
 
             if (smtpConfig == null) {
