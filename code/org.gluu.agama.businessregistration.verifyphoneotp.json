@@ -125,7 +125,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "repeatNode-46785125-4ade-4900-a32a-09540bf73cc0",
@@ -237,7 +237,9 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false,
+			"dragging": false
 		},
 		{
 			"id": "logNode-04610b62-2843-4fba-99c5-edc8f0de4fc5",
@@ -313,7 +315,8 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-9f773375-e4af-482a-b0dd-925ae192e30c",
@@ -456,7 +459,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "callNode-037ac66d-88eb-4b73-a823-79f9bd6866df",
@@ -497,7 +501,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "whenNode-9d685540-16e3-4252-95e3-709c5d11e633",
@@ -538,7 +543,8 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-4ba1f3cc-35ca-436a-b5f2-593a753579cd",
@@ -572,7 +578,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "assignmentNode-ebd7a25d-b0fd-4329-9205-dcc14a987ce8",
@@ -593,13 +600,13 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "\"Error occurs while sending new code to you. Please contact site administrator.\"",
+							"assignmentExpression": "\"Failed to send OTP. Please try again.\"",
 							"assignedVariableName": "otpUiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": false,
-							"assignmentExpression": "true",
-							"assignedVariableName": "isResending"
+							"assignmentExpression": "\"\"",
+							"assignedVariableName": "otpUiFeedback.infoMessage"
 						}
 					],
 					"nodeIcon": "material-symbols:equal",
@@ -621,8 +628,8 @@
 			"id": "logNode-35f04f9f-e860-463c-83ae-a6452697d3ef",
 			"type": "logNode",
 			"position": {
-				"x": 3030,
-				"y": 560
+				"x": 3086.598465510787,
+				"y": 533.1157288823763
 			},
 			"data": {
 				"id": "logNode-35f04f9f-e860-463c-83ae-a6452697d3ef",
@@ -632,7 +639,7 @@
 					"y": 560
 				},
 				"previousNodeId": "whenNode-9d685540-16e3-4252-95e3-709c5d11e633",
-				"branching": "continue",
+				"branching": "otherwise",
 				"agamaData": {
 					"logMessage": "\"New OTP code send successfully!\" resendHasSucceed",
 					"logLevel": "info",
@@ -649,14 +656,16 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false,
+			"dragging": false
 		},
 		{
 			"id": "assignmentNode-d6cfbf30-9ff9-4ea7-ba17-2d5200a87d3e",
 			"type": "assignmentNode",
 			"position": {
-				"x": 3280,
-				"y": 560
+				"x": 3306.884271117624,
+				"y": 501.9865728514437
 			},
 			"data": {
 				"id": "assignmentNode-d6cfbf30-9ff9-4ea7-ba17-2d5200a87d3e",
@@ -670,13 +679,13 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "\"An OTP code has been send to your register mobile number.\"",
+							"assignmentExpression": "\"An OTP code has been sent to your register mobile number.\"",
 							"assignedVariableName": "otpUiFeedback.infoMessage"
 						},
 						{
-							"variableTypeCheck": false,
-							"assignmentExpression": "true",
-							"assignedVariableName": "isResending"
+							"variableTypeCheck": true,
+							"assignmentExpression": "\"\"",
+							"assignedVariableName": "otpUiFeedback.errorMessage"
 						}
 					],
 					"nodeIcon": "material-symbols:equal",
@@ -692,7 +701,8 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": false
+			"selected": false,
+			"dragging": false
 		},
 		{
 			"id": "logNode-f78bb99f-8cac-4135-80a5-975c892127c5",
@@ -711,7 +721,7 @@
 				"previousNodeId": "whenNode-a5a4574f-ab7e-4537-8032-ca5c35d92d35",
 				"branching": "otherwise",
 				"agamaData": {
-					"logMessage": "\"Information provided by the user is : \" otpCreds.code",
+					"logMessage": "\"OTP submitted by user\"",
 					"logLevel": "info",
 					"nodeIcon": "octicon:log-16",
 					"nodeColor": "",
@@ -727,7 +737,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": false
+			"selected": true
 		},
 		{
 			"id": "callNode-0d4248bb-1854-4fef-a9ed-5d5e4e497e2d",
@@ -766,7 +776,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-53b3f76c-abf4-4759-a2e3-fb680f95c18d",
@@ -798,7 +809,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "whenNode-029d33a5-d102-4e67-97ef-157c9292df44",
@@ -839,7 +851,8 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-fee25ae9-4749-4bdf-9152-ae889bf58e61",
@@ -873,7 +886,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "finishNode-6a3b7d27-8115-409e-9092-23ec233cc20f",
@@ -981,7 +995,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "whenNode-8289c8ce-2639-4ee2-a207-2629c3f0b337",
@@ -1022,7 +1037,8 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-fe37751e-7d92-4675-8b70-0fc4e2fbe09a",
@@ -1056,7 +1072,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "finishNode-5fabadd8-001f-4c58-9df7-72145b197777",
@@ -1147,6 +1164,11 @@
 							"variableTypeCheck": true,
 							"assignmentExpression": "\"Invalid code provided.\"",
 							"assignedVariableName": "otpUiFeedback.errorMessage"
+						},
+						{
+							"variableTypeCheck": true,
+							"assignmentExpression": "\"\"",
+							"assignedVariableName": "otpUiFeedback.infoMessage"
 						}
 					],
 					"nodeIcon": "material-symbols:equal",
@@ -1520,25 +1542,6 @@
 			"sourceHandle": ""
 		},
 		{
-			"id": "whenNode-9d685540-16e3-4252-95e3-709c5d11e633-logNode-35f04f9f-e860-463c-83ae-a6452697d3ef",
-			"type": "default",
-			"source": "whenNode-9d685540-16e3-4252-95e3-709c5d11e633",
-			"target": "logNode-35f04f9f-e860-463c-83ae-a6452697d3ef",
-			"labelBgPadding": [
-				8,
-				4
-			],
-			"labelBgBorderRadius": 4,
-			"label": "continue",
-			"labelBgStyle": {
-				"fill": "#009688",
-				"color": "#ffffff",
-				"fillOpacity": 0.7
-			},
-			"labelShowBg": true,
-			"sourceHandle": "source_whenNode-9d685540-16e3-4252-95e3-709c5d11e633_continue"
-		},
-		{
 			"id": "logNode-35f04f9f-e860-463c-83ae-a6452697d3ef-assignmentNode-d6cfbf30-9ff9-4ea7-ba17-2d5200a87d3e",
 			"type": "default",
 			"source": "logNode-35f04f9f-e860-463c-83ae-a6452697d3ef",
@@ -1841,11 +1844,29 @@
 			},
 			"labelShowBg": true,
 			"sourceHandle": ""
+		},
+		{
+			"source": "whenNode-9d685540-16e3-4252-95e3-709c5d11e633",
+			"sourceHandle": "source_whenNode-9d685540-16e3-4252-95e3-709c5d11e633_otherwise",
+			"target": "logNode-35f04f9f-e860-463c-83ae-a6452697d3ef",
+			"targetHandle": "target_logNode-35f04f9f-e860-463c-83ae-a6452697d3ef",
+			"label": "otherwise",
+			"labelBgPadding": [
+				8,
+				4
+			],
+			"labelBgBorderRadius": 4,
+			"labelBgStyle": {
+				"fill": "#009688",
+				"color": "#ffffff",
+				"fillOpacity": 0.7
+			},
+			"id": "xy-edge__whenNode-9d685540-16e3-4252-95e3-709c5d11e633source_whenNode-9d685540-16e3-4252-95e3-709c5d11e633_otherwise-logNode-35f04f9f-e860-463c-83ae-a6452697d3eftarget_logNode-35f04f9f-e860-463c-83ae-a6452697d3ef"
 		}
 	],
 	"viewport": {
-		"x": 374,
-		"y": 184,
-		"zoom": 1
+		"x": -101.42689312024947,
+		"y": 81.49564650663001,
+		"zoom": 0.6692904554411356
 	}
 }
