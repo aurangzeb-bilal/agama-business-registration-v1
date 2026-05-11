@@ -40,12 +40,12 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     private static final String LANG = "lang";
     private static final String RESIDENCE_COUNTRY = "residenceCountry";
     private static final String PHONE_NUMBER = "telephoneNumber"; // business phone — distinct from personal "mobile"
-    private static final String ORG_NAME = "o";
+    private static final String ORG_NAME = "businessName";
     private static final String MAIL = "mail";
     private static final String UID = "uid";
     private static final String PASSWORD = "userPassword";
     private static final String INUM_ATTR = "inum";
-    private static final String LINK_ATTR = "jansExtUid";
+    private static final String LINK_ATTR = "businessLink";
     private static final String CREATOR_PREFIX = "businessCreator:";
     private static final String MEMBER_PREFIX = "businessMember:";
     private static final String EMAIL_VERIFIED = "emailVerified";
@@ -56,16 +56,18 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
 
     private static JansBusinessUserRegistration INSTANCE = null;
     private Map<String, String> flowConfig;
-    private static final Map<String, String> userCodes = new HashMap<>();
+    private static final Map<String, String> userCodes       = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, Long>   userCodeExpiry  = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, String> emailCodes      = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, Long>   emailCodeExpiry = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, long[]> sendCounts      = new java.util.concurrent.ConcurrentHashMap<>();
 
     public JansBusinessUserRegistration() {
         this.flowConfig = new HashMap<>();
-        logger.info("Initialized JansBusinessUserRegistration with empty config");
     }
 
     public JansBusinessUserRegistration(Map<String, String> config) {
         this.flowConfig = config;
-        logger.info("JansBusinessUserRegistration initialized. Twilio account SID configured: {}", config.get("ACCOUNT_SID") != null);
     }
 
     public static synchronized BusinessUserRegistration getInstance() {
@@ -103,6 +105,8 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 logger.error("personalUid is null/empty");
                 return false;
             }
+            logger.info("MWAPP gate check uid={}", personalUid);
+
 
             // HMAC-SHA256(username, secretKey).hex.lowercase
             javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA256");
@@ -126,21 +130,24 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 .GET()
                 .build();
             HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-            logger.info("MWAPP API status={} body={}", response.statusCode(), response.body());
+            
 
-            if (response.statusCode() != 200) return false;
+            if (response.statusCode() != 200) {
+                logger.warn("MWAPP gate non-200 for uid={} status={}", personalUid, response.statusCode());
+                return false;
+            }
 
             String body = response.body() == null ? "" : response.body();
             // Lightweight regex parse — avoids pulling in JSON dependency at the Agama engine layer.
-            boolean phoneOk = body.matches("(?s).*\"phone_verified\"\\s*:\\s*true.*");
-            boolean faceOk = body.matches("(?s).*\"face_verified\"\\s*:\\s*true.*");
-            boolean kycOk = body.matches("(?s).*\"kyc_verified\"\\s*:\\s*true.*");
+            boolean phoneOk = body.matches('''(?s).*"phone_verified"\\s*:\\s*true.*''');
+            boolean faceOk = body.matches('''(?s).*"face_verified"\\s*:\\s*true.*''');
+            boolean kycOk = body.matches('''(?s).*"kyc_verified"\\s*:\\s*true.*''');
 
             // Extract user_id for logging + defensive cross-check.
             // mwapp's user_id is documented to match the Jans inum.
             String mwappUserId = null;
             java.util.regex.Matcher uidMatch = java.util.regex.Pattern
-                .compile("\"user_id\"\\s*:\\s*\"([^\"]+)\"")
+                .compile('''"user_id"\\s*:\\s*"([^"]+)"''')
                 .matcher(body);
             if (uidMatch.find()) {
                 mwappUserId = uidMatch.group(1);
@@ -180,26 +187,34 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
         Map<String, String> result = new HashMap<>();
         try {
             UserService userService = CdiUtil.bean(UserService.class);
-            if (userService == null) {
-                logger.error("UserService is NULL");
-                return result;
-            }
 
-            User fullUser = userService.getUser(personalUid, "uid", "inum", "mobile", "lang", "jansStatus");
+            User fullUser = getUser(UID, personalUid);
             if (fullUser == null) {
-                logger.info("Personal user not found in Jans for uid={}", personalUid);
                 return result;
             }
 
             String status = getSingleValuedAttr(fullUser, "jansStatus");
+
             if (status != null && !"active".equalsIgnoreCase(status)) {
-                logger.info("Personal user uid={} not active in Jans (status={})", personalUid, status);
+                logger.info("Personal user uid={} not active (status={})", personalUid, status);
                 return result;
             }
 
-            String mobile = getSingleValuedAttr(fullUser, "mobile");
+            CustomObjectAttribute mobileAttr = userService.getCustomAttribute(fullUser, "mobile");
+
+            String mobile = null;
+
+            if (mobileAttr != null) {
+                if (mobileAttr.getValue() != null && !mobileAttr.getValue().isEmpty()) {
+                    mobile = mobileAttr.getValue();
+                } else if (mobileAttr.getValues() != null && !mobileAttr.getValues().isEmpty()) {
+                    Object first = mobileAttr.getValues().get(0);
+                    if (first != null) mobile = first.toString();
+                }
+            }
+
             if (mobile == null || mobile.trim().isEmpty()) {
-                logger.info("Personal user uid={} has no mobile attribute in Jans", personalUid);
+                logger.info("Personal user uid={} has no mobile attribute", personalUid);
                 return result;
             }
 
@@ -210,6 +225,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             result.put("mobile", mobile);
             result.put("lang", lang != null ? lang : "en");
             return result;
+
         } catch (Exception ex) {
             logger.error("getPersonalUserDetails failed for uid={}: {}", personalUid, ex.getMessage(), ex);
             return result;
@@ -223,10 +239,15 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     @Override
     public String sendOTPCode(String phone, String lang, String verificationMethod) {
         try {
-            logger.info("Sending OTP to phone: {} via {}", phone, verificationMethod);
+            if (!canSendOTP(phone)) {
+                logger.warn("OTP send rate-limited phone=...{} (>= {}/window)",
+                            lastFour(phone), maxSendsPerHour());
+                return null;
+            }
+            logger.info("OTP send phone=...{} lang={} method={}",
+                        lastFour(phone), lang, verificationMethod);
 
             String otpCode = generateSMSOTpCode(OTP_CODE_LENGTH);
-            logger.info("Generated OTP {} for phone {}", otpCode, phone);
 
             String preferredLang = (lang != null && !lang.isEmpty()) ? lang.toLowerCase() : "en";
 
@@ -263,6 +284,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     private boolean associateGeneratedCodeToPhone(String phone, String code) {
         try {
             userCodes.put(phone, code);
+            userCodeExpiry.put(phone, System.currentTimeMillis() + otpTtlMs());
             return true;
         } catch (Exception e) {
             logger.error("Error associating OTP for phone {}: {}", phone, e.getMessage(), e);
@@ -288,9 +310,9 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 }
                 fromNumber = "whatsapp:" + fromNumber;
                 phone = "whatsapp:" + phone;
-                logger.info("Using WhatsApp channel for OTP delivery");
-
+                
                 String contentSid = getWhatsAppContentSid(lang);
+
                 if (contentSid == null || contentSid.trim().isEmpty()) {
                     logger.error("No WhatsApp content SID for lang={}", lang);
                     return false;
@@ -318,23 +340,19 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 HttpResponse<String> response = HttpClient.newHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
-                logger.info("Twilio WhatsApp API status={} body={}", response.statusCode(), response.body());
-
                 if (response.statusCode() < 200 || response.statusCode() >= 300) {
-                    logger.error("WhatsApp send failed: {}", response.body());
+                    logger.error("WhatsApp send failed: status={} body={}", response.statusCode(), response.body());
                     return false;
                 }
             } else {
                 PhoneNumber FROM_NUMBER = new com.twilio.type.PhoneNumber(fromNumber);
-                logger.info("Sending from: {}", fromNumber);
                 PhoneNumber TO_NUMBER = new com.twilio.type.PhoneNumber(phone);
-                logger.info("Sending to: {}", phone);
                 Twilio.init(flowConfig.get("ACCOUNT_SID"), flowConfig.get("AUTH_TOKEN"));
                 Message.creator(TO_NUMBER, FROM_NUMBER, message).create();
             }
 
-            logger.info("OTP successfully sent to {}", phone);
             return true;
+
         } catch (Exception exception) {
             logger.error("Error sending OTP to {}: {}", phone, exception.getMessage(), exception);
             return false;
@@ -345,7 +363,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
         String suffix = (lang != null && !lang.isEmpty()) ? lang.toUpperCase() : "EN";
         String sid = flowConfig.get("WHATSAPP_CONTENT_SID_" + suffix);
         if (sid == null || sid.trim().isEmpty()) {
-            logger.info("No WhatsApp SID for lang {}, falling back to EN", suffix);
             sid = flowConfig.get("WHATSAPP_CONTENT_SID_EN");
         }
         return sid;
@@ -433,12 +450,26 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     @Override
     public boolean validateOTPCode(String phone, String code) {
         try {
-            String storedCode = userCodes.getOrDefault(phone, "NULL");
-            if (storedCode.equalsIgnoreCase(code)) {
-                userCodes.remove(phone);
-                return true;
+            String storedCode = userCodes.get(phone);
+            Long expiresAt    = userCodeExpiry.get(phone);
+
+            if (storedCode == null || expiresAt == null) {
+                logger.info("OTP validate phone=...{} result=miss", lastFour(phone));
+                return false;
             }
-            return false;
+            if (System.currentTimeMillis() > expiresAt) {
+                userCodes.remove(phone);
+                userCodeExpiry.remove(phone);
+                logger.info("OTP validate phone=...{} result=expired", lastFour(phone));
+                return false;
+            }
+            boolean ok = storedCode.equalsIgnoreCase(code);
+            if (ok) {
+                userCodes.remove(phone);
+                userCodeExpiry.remove(phone);
+            }
+            logger.info("OTP validate phone=...{} result={}", lastFour(phone), ok ? "ok" : "wrong");
+            return ok;
         } catch (Exception ex) {
             logger.error("Error validating OTP for phone {}: {}", phone, ex.getMessage(), ex);
             return false;
@@ -450,13 +481,45 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     // ---------------------------------------------------------------
 
     @Override
+    public boolean validateEmailOTP(String email, String code) {
+        try {
+            String storedCode = emailCodes.get(email);
+            Long expiresAt    = emailCodeExpiry.get(email);
+
+            if (storedCode == null || expiresAt == null) {
+                logger.info("Email OTP validate to={} result=miss", email);
+                return false;
+            }
+            if (System.currentTimeMillis() > expiresAt) {
+                emailCodes.remove(email);
+                emailCodeExpiry.remove(email);
+                logger.info("Email OTP validate to={} result=expired", email);
+                return false;
+            }
+            boolean ok = storedCode.equalsIgnoreCase(code);
+            if (ok) {
+                emailCodes.remove(email);
+                emailCodeExpiry.remove(email);
+            }
+            logger.info("Email OTP validate to={} result={}", email, ok ? "ok" : "wrong");
+            return ok;
+        } catch (Exception ex) {
+            logger.error("Error validating email OTP for {}: {}", email, ex.getMessage(), ex);
+            return false;
+        }
+    }
+
+    @Override
     public String sendEmail(String to, String lang) {
         try {
+            logger.info("Email OTP send to={} lang={}", to, lang);
+
             ConfigurationService configService = CdiUtil.bean(ConfigurationService.class);
+
             SmtpConfiguration smtpConfig = configService.getConfiguration().getSmtpConfiguration();
 
             if (smtpConfig == null) {
-                LogUtils.log("SMTP configuration is missing.");
+                logger.error("SMTP configuration is missing.");
                 return null;
             }
 
@@ -503,14 +566,17 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                     htmlBody);
 
             if (sent) {
-                LogUtils.log("Business email OTP sent to %", to);
-                return otp;
+                emailCodes.put(to, otp);
+                emailCodeExpiry.put(to, System.currentTimeMillis() + otpTtlMs());
+                // Return the recipient (NOT the OTP). Flow uses this to detect send success
+                // and routes validation through validateEmailOTP for TTL + one-time use enforcement.
+                return to;
             } else {
-                LogUtils.log("Failed to send business email OTP to %", to);
+                logger.error("Failed to send business email OTP to {}", to);
                 return null;
             }
         } catch (Exception e) {
-            LogUtils.log("Failed to send business email OTP: %", e.getMessage());
+            logger.error("Failed to send business email OTP to {}: {}", to, e.getMessage(), e);
             return null;
         }
     }
@@ -521,41 +587,50 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
 
     @Override
     public Map<String, Object> validateBusinessInputs(Map<String, String> profile) {
-        LogUtils.log("Validate business inputs");
         Map<String, Object> result = new HashMap<>();
 
-        if (profile.get(UID) == null || !Pattern.matches("^[A-Za-z][A-Za-z0-9]{5,19}$", profile.get(UID))) {
+        if (profile.get(UID) == null || !Pattern.matches('''^[A-Za-z][A-Za-z0-9]{5,19}$''', profile.get(UID))) {
             result.put("valid", false);
             result.put("message", "Invalid business username. Must be 6-20 characters, start with a letter, and contain only letters and digits.");
             return result;
         }
 
-        if (profile.get(MAIL) == null || !Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", profile.get(MAIL))) {
+        if (profile.get(MAIL) == null || !Pattern.matches('''^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$''', profile.get(MAIL))) {
             result.put("valid", false);
             result.put("message", "Invalid business email address.");
             return result;
         }
 
-        if (profile.get(ORG_NAME) == null || !Pattern.matches("^[A-Za-z0-9 .&'\\-,]{2,100}$", profile.get(ORG_NAME))) {
+        if (profile.get(PASSWORD) == null || !Pattern.matches('''^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!"#$%&'()*+,-./:;<=>?@[\\\\]^_`{|}~])[!-~&&[^ ]]{12,24}$''', profile.get(PASSWORD))) {
+             result.put("valid", false);
+             result.put("message", "Invalid password. Must be at least 12 to 24 characters with uppercase, lowercase, digit, and special character.");
+             return result;
+        }
+        if (profile.get(ORG_NAME) == null || !Pattern.matches('''^[-A-Za-z0-9 .&',]{2,100}$''', profile.get(ORG_NAME))) {
             result.put("valid", false);
             result.put("message", "Invalid organization name. Must be 2-100 characters using letters, digits, spaces, and . & ' - ,");
             return result;
         }
 
-        if (profile.get(LANG) == null || !Pattern.matches("^(ar|en|es|fr|pt|id)$", profile.get(LANG))) {
+        if (profile.get(LANG) == null || !Pattern.matches('''^(ar|en|es|fr|pt|id)$''', profile.get(LANG))) {
             result.put("valid", false);
             result.put("message", "Invalid language code. Must be one of ar, en, es, fr, pt, or id.");
             return result;
         }
 
-        if (profile.get(RESIDENCE_COUNTRY) == null || !Pattern.matches("^[A-Z]{2}$", profile.get(RESIDENCE_COUNTRY))) {
+        if (profile.get(RESIDENCE_COUNTRY) == null || !Pattern.matches('''^[A-Z]{2}$''', profile.get(RESIDENCE_COUNTRY))) {
             result.put("valid", false);
             result.put("message", "Invalid residence country. Must be exactly two uppercase letters.");
             return result;
         }
+        if (!profile.get(PASSWORD).equals(profile.get(CONFIRM_PASSWORD))) {
+            result.put("valid", false);
+            result.put("message", "Password and confirm password do not match.");
+            return result;
+        }
 
         result.put("valid", true);
-        result.put("message", "All inputs are valid.");
+        result.put("message", "");
         return result;
     }
 
@@ -563,7 +638,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     public Map<String, String> getUserEntityByMail(String email) {
         User user = getUser(MAIL, email);
         boolean local = user != null;
-        LogUtils.log("There is % local account for %", local ? "a" : "no", email);
 
         if (local) {
             String uid = getSingleValuedAttr(user, UID);
@@ -582,7 +656,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     public Map<String, String> getUserEntityByUsername(String username) {
         User user = getUser(UID, username);
         boolean local = user != null;
-        LogUtils.log("There is % local account for %", local ? "a" : "no", username);
 
         if (local) {
             String email = getSingleValuedAttr(user, MAIL);
@@ -599,45 +672,47 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     }
 
     @Override
-    public String addNewBusinessUser(Map<String, String> profile, String personalInum, String phone) throws Exception {
-        Set<String> attributes = Set.of("uid", "mail", "userPassword", "o", "lang", "residenceCountry");
-        User user = new User();
+    public String addNewBusinessUser(Map<String, String> profile, String personalInum, String phone) {
+        try {
+            Set<String> attributes = Set.of("uid", "mail", "userPassword", "businessName", "lang", "residenceCountry");
+            User user = new User();
 
-        attributes.forEach(attr -> {
-            String val = profile.get(attr);
-            if (StringHelper.isNotEmpty(val)) {
-                user.setAttribute(attr, val);
+            attributes.forEach(attr -> {
+                String val = profile.get(attr);
+                if (StringHelper.isNotEmpty(val)) {
+                    user.setAttribute(attr, val);
+                }
+            });
+
+            user.setAttribute(EMAIL_VERIFIED, Boolean.TRUE);
+            user.setAttribute(PHONE_VERIFIED, Boolean.FALSE);
+
+            // Multi-valued jansExtUid linkage:
+            //   businessCreator:<personalInum>  -> who created the business
+            //   businessMember:<personalInum>   -> creator is also the first employee
+            // Additional employees added later via addMemberToBusiness().
+            user.setAttribute(LINK_ATTR, java.util.List.of(
+                CREATOR_PREFIX + personalInum,
+                MEMBER_PREFIX + personalInum
+            ));
+
+            UserService userService = CdiUtil.bean(UserService.class);
+            user = userService.addUser(user, true);
+
+            if (user == null) {
+                logger.error("addNewBusinessUser: addUser returned null for uid={}", profile.get(UID));
+                return null;
             }
-        });
 
-        // If no password supplied on the form, generate a server-side random one so the LDAP entry is valid.
-        if (!StringHelper.isNotEmpty(profile.get(PASSWORD))) {
-            byte[] randomBytes = new byte[24];
-            new SecureRandom().nextBytes(randomBytes);
-            String generatedPassword = Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes);
-            user.setAttribute(PASSWORD, generatedPassword);
+            return getSingleValuedAttr(user, INUM_ATTR);
+        } catch (Exception ex) {
+            // Returning null instead of throwing keeps the .flow file simple
+            // (no need for the dual-assignment "result | E = Call ..." syntax,
+            // which Agama Lab's "Create flow by code" import doesn't parse).
+            // The flow's `When businessInum is not null` check handles the failure case.
+            logger.error("addNewBusinessUser failed for uid={}: {}", profile.get(UID), ex.getMessage(), ex);
+            return null;
         }
-
-        user.setAttribute(EMAIL_VERIFIED, Boolean.TRUE);
-        user.setAttribute(PHONE_VERIFIED, Boolean.FALSE);
-
-        // Multi-valued jansExtUid linkage:
-        //   businessCreator:<personalInum>  → who created the business
-        //   businessMember:<personalInum>   → creator is also the first employee
-        // Additional employees added later via addMemberToBusiness().
-        user.setAttribute(LINK_ATTR, java.util.List.of(
-            CREATOR_PREFIX + personalInum,
-            MEMBER_PREFIX + personalInum
-        ));
-
-        UserService userService = CdiUtil.bean(UserService.class);
-        user = userService.addUser(user, true);
-
-        if (user == null) {
-            throw new EntryNotFoundException("Added business user not found");
-        }
-
-        return getSingleValuedAttr(user, INUM_ATTR);
     }
 
     @Override
@@ -654,7 +729,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             user.setAttribute(PHONE_VERIFIED, Boolean.TRUE);
 
             userService.updateUser(user);
-            logger.info("Phone verification set to TRUE for UID {}", userName);
+            
             return "Phone " + phone + " verified successfully for user " + userName;
         } catch (Exception e) {
             logger.error("Error marking phone verified for {}: {}", userName, e.getMessage(), e);
@@ -798,6 +873,47 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     // ---------------------------------------------------------------
     // Helpers
     // ---------------------------------------------------------------
+
+    // Reads a non-negative long from flowConfig with a default fallback.
+    private long configLong(String key, long defaultValue) {
+        try {
+            String v = flowConfig.get(key);
+            if (v == null || v.trim().isEmpty()) return defaultValue;
+            return Long.parseLong(v.trim());
+        } catch (NumberFormatException e) {
+            logger.warn("Invalid {} in config (not a number); using default {}", key, defaultValue);
+            return defaultValue;
+        }
+    }
+
+    private long otpTtlMs()        { return configLong("OTP_TTL_SECONDS", 600L) * 1000L; }
+    private long sendWindowMs()    { return configLong("OTP_SEND_WINDOW_SECONDS", 3600L) * 1000L; }
+    private int  maxSendsPerHour() { return (int) configLong("OTP_MAX_SENDS_PER_HOUR", 8L); }
+
+    // Per-phone send-rate gate. Returns false if the phone has already used
+    // its quota for the current window; increments the counter on success.
+    private boolean canSendOTP(String phone) {
+        long now = System.currentTimeMillis();
+        long[] entry = sendCounts.get(phone);
+        if (entry == null || now - entry[1] > sendWindowMs()) {
+            entry = new long[] { 0L, now };
+            sendCounts.put(phone, entry);
+        }
+        if (entry[0] >= maxSendsPerHour()) {
+            return false;
+        }
+        entry[0]++;
+        return true;
+    }
+
+    // Phone-suffix masking for audit logs. Strips +/whatsapp: prefixes.
+    private static String lastFour(String phone) {
+        if (phone == null) return "????";
+        String s = phone;
+        if (s.startsWith("whatsapp:")) s = s.substring("whatsapp:".length());
+        if (s.startsWith("+"))         s = s.substring(1);
+        return s.length() <= 4 ? s : s.substring(s.length() - 4);
+    }
 
     private String getSingleValuedAttr(User user, String attribute) {
         Object value = null;

@@ -1,0 +1,66 @@
+//  once for personal-phone OTP, once for business-phone confirmation OTP)
+Flow org.gluu.agama.businessregistration.verifyphoneotp
+     Basepath ""
+     Timeout 900 seconds
+     Inputs userRegistrationService phone lang verificationMethod
+//  Log flow inputs provided by the flow caller.
+Log "@info Information received from the caller: " phone lang verificationMethod
+otpUiFeedback = {}
+resendCount = 0
+validationAttempts = 0
+otpUiFeedback.errorMessage = ""
+otpUiFeedback.infoMessage = ""
+Repeat 20 times max
+     //   Show UI to collect OTP code from user.
+     otpCreds = RRF "smsOtp.ftlh" otpUiFeedback
+     When otpCreds.hasRequestedNewCode is "yes"
+          //  Log new code request
+          Log "@info User has requested a new code."
+          When resendCount is 3
+               //  Maximum resend attempts exceeded
+               Log "@info Maximum resend attempts exceeded"
+               it_mbple = {success:false, error: "ExceededResendAttempts"}
+               Finish it_mbple
+          resendCount = Call org.gluu.agama.newregistration.CounterHelper#increment resendCount
+          //  Resend attempt number
+          Log "@info Resend attempt number: " resendCount
+          //  Resend otp
+          resendHasSucceed = Call userRegistrationService sendOTPCode phone lang verificationMethod
+          When resendHasSucceed is null
+               //  Fail to resend new code to user.
+               Log "@info Fail to resend new code to user. " resendHasSucceed
+               otpUiFeedback.errorMessage = "Failed to send OTP. Please try again."
+               otpUiFeedback.infoMessage = ""
+          Otherwise
+               //  New OTP code send successfully!
+               Log "@info New OTP code send successfully!" resendHasSucceed
+               otpUiFeedback.infoMessage = "An OTP code has been sent to your register mobile number."
+               otpUiFeedback.errorMessage = ""
+     Otherwise
+          //   Add log entry with collected code in log file.
+          Log "@info OTP submitted by user"
+          validationAttempts = Call org.gluu.agama.newregistration.CounterHelper#increment validationAttempts
+          //  Add log entry with validation attempt number.
+          Log "@info Validation attempt number: " validationAttempts
+          //  Check validation
+          When validationAttempts is 4
+               //  Log validation exceeded
+               Log "@info Maximum validation attempts exceeded"
+               it_zypxh = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+               Finish it_zypxh
+          Otherwise
+               //   Validate the OTP code provided by the user.
+               otpValidationResult = Call userRegistrationService validateOTPCode phone otpCreds.code
+               Log "@info OTP validation result is:" otpValidationResult
+               //  If otp validation was successful
+               When otpValidationResult is true
+                    Log "@info OTP validated Successfully"
+                    Finish otpValidationResult
+               Otherwise
+                    Log "@info Invalid code provided "
+                    otpUiFeedback.errorMessage = "Invalid code provided."
+                    otpUiFeedback.infoMessage = ""
+//  OTP verification loop completed
+Log "@info OTP verification loop completed"
+it_ydqjz = {success:false, error: "UnexpectedLoopCompletion"}
+Finish it_ydqjz
