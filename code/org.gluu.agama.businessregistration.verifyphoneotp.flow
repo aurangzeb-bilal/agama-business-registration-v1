@@ -19,8 +19,8 @@ Repeat 20 times max
           When resendCount is 3
                //  Maximum resend attempts exceeded
                Log "@info Maximum resend attempts exceeded"
-               it_eatyt = {success:false, error: "ExceededResendAttempts"}
-               Finish it_eatyt
+               it_mbple = {success:false, error: "ExceededResendAttempts"}
+               Finish it_mbple
           resendCount = Call org.gluu.agama.newregistration.CounterHelper#increment resendCount
           //  Resend attempt number
           Log "@info Resend attempt number: " resendCount
@@ -29,15 +29,16 @@ Repeat 20 times max
           When resendHasSucceed is null
                //  Fail to resend new code to user.
                Log "@info Fail to resend new code to user. " resendHasSucceed
-               otpUiFeedback.errorMessage = "Error occurs while sending new code to you. Please contact site administrator."
-               isResending = true
-          //  New OTP code send successfully!
-          Log "@info New OTP code send successfully!" resendHasSucceed
-          otpUiFeedback.infoMessage = "An OTP code has been send to your register mobile number."
-          isResending = true
+               otpUiFeedback.errorMessage = "Failed to send OTP. Please try again."
+               otpUiFeedback.infoMessage = ""
+          Otherwise
+               //  New OTP code send successfully!
+               Log "@info New OTP code send successfully!" resendHasSucceed
+               otpUiFeedback.infoMessage = "An OTP code has been sent to your register mobile number."
+               otpUiFeedback.errorMessage = ""
      Otherwise
           //   Add log entry with collected code in log file.
-          Log "@info Information provided by the user is : " otpCreds.code
+          Log "@info OTP submitted by user"
           validationAttempts = Call org.gluu.agama.newregistration.CounterHelper#increment validationAttempts
           //  Add log entry with validation attempt number.
           Log "@info Validation attempt number: " validationAttempts
@@ -45,8 +46,8 @@ Repeat 20 times max
           When validationAttempts is 4
                //  Log validation exceeded
                Log "@info Maximum validation attempts exceeded"
-               it_amvob = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-               Finish it_amvob
+               it_zypxh = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+               Finish it_zypxh
           Otherwise
                //   Validate the OTP code provided by the user.
                otpValidationResult = Call userRegistrationService validateOTPCode phone otpCreds.code
@@ -58,7 +59,8 @@ Repeat 20 times max
                Otherwise
                     Log "@info Invalid code provided "
                     otpUiFeedback.errorMessage = "Invalid code provided."
+                    otpUiFeedback.infoMessage = ""
 //  OTP verification loop completed
 Log "@info OTP verification loop completed"
-it_pqydv = {success:false, error: "UnexpectedLoopCompletion"}
-Finish it_pqydv
+it_ydqjz = {success:false, error: "UnexpectedLoopCompletion"}
+Finish it_ydqjz
