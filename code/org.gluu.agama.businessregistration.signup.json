@@ -1055,7 +1055,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "repeatNode-d6bd1959-4683-411c-8560-9735313c3d46",
@@ -1506,7 +1506,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Failed to send OTP. Please try again.",
+							"assignmentExpression": "\"Failed to send OTP. Please try again.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -1523,7 +1523,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-93d303ec-8374-416e-9fcf-018ef488d591",
@@ -6301,8 +6302,8 @@
 		}
 	],
 	"viewport": {
-		"x": -2290.22815954435,
-		"y": 165.69473693613122,
+		"x": -4862.22815954435,
+		"y": -390.3052630638688,
 		"zoom": 0.5
 	}
 }
