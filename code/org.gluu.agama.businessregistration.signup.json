@@ -1033,12 +1033,12 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.infoMessage"
 						}
 					],
@@ -1054,7 +1054,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "repeatNode-d6bd1959-4683-411c-8560-9735313c3d46",
@@ -6300,8 +6301,8 @@
 		}
 	],
 	"viewport": {
-		"x": -919.2281595443501,
-		"y": 168.69473693613122,
+		"x": -2290.22815954435,
+		"y": 165.69473693613122,
 		"zoom": 0.5
 	}
 }
