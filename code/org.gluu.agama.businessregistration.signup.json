@@ -3338,7 +3338,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "assignmentNode-870d2850-0e9d-472a-af46-5a2617d79ae5",
@@ -3573,12 +3573,12 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Invalid OTP. Please try again.",
+							"assignmentExpression": "\"Invalid OTP. Please try again.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.infoMessage"
 						}
 					],
@@ -3594,7 +3594,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-04f9ac41-f641-4d1b-9646-89bde4be0fa5",
@@ -6442,8 +6443,8 @@
 		}
 	],
 	"viewport": {
-		"x": -9566.66661366025,
-		"y": -865.3489047626636,
+		"x": -7177.666613660251,
+		"y": -282.3489047626633,
 		"zoom": 0.679610261418368
 	}
 }
