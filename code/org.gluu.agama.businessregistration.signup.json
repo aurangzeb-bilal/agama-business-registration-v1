@@ -3771,7 +3771,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "This business email is already registered. Please use a different one.",
+							"assignmentExpression": "\"This business email is already registered. Please use a different one.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
@@ -3792,7 +3792,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-b14e2867-65bd-40c9-8fc4-056ce3cc84a3",
