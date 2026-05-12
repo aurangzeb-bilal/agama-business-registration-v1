@@ -192,7 +192,12 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             if (fullUser == null) {
                 return result;
             }
-
+            // Reject business accounts — identified by presence of businessName (canonical business marker per SCIM schema)
+            String businessName = getSingleValuedAttr(fullUser, ORG_NAME);
+            if (businessName != null && !businessName.trim().isEmpty()) {
+                logger.info("Personal-account check failed for uid={}: entry is a business account", personalUid);
+                return result;
+            }
             String status = getSingleValuedAttr(fullUser, "jansStatus");
 
             if (status != null && !"active".equalsIgnoreCase(status)) {
@@ -217,7 +222,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 logger.info("Personal user uid={} has no mobile attribute", personalUid);
                 return result;
             }
-
+            
             String inum = getSingleValuedAttr(fullUser, INUM_ATTR);
             String lang = getSingleValuedAttr(fullUser, "lang");
 
