@@ -1524,7 +1524,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-93d303ec-8374-416e-9fcf-018ef488d591",
@@ -1589,12 +1589,12 @@
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.infoMessage"
 						}
 					],
@@ -1610,7 +1610,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "repeatNode-f598a710-0e2c-46b9-869e-aa396de8d83c",
@@ -6302,8 +6303,8 @@
 		}
 	],
 	"viewport": {
-		"x": -4862.22815954435,
-		"y": -390.3052630638688,
+		"x": -3912.22815954435,
+		"y": -363.3052630638688,
 		"zoom": 0.5
 	}
 }
