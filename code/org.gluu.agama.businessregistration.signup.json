@@ -1611,7 +1611,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "repeatNode-f598a710-0e2c-46b9-869e-aa396de8d83c",
@@ -2055,7 +2055,8 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "assignmentNode-86c7e4b6-cdb0-4fa6-80c8-645a5c12c8ed",
@@ -2077,22 +2078,12 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Failed to send OTP. Please try again.",
+							"assignmentExpression": "\"Failed to send OTP. Please try again.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
-							"assignedVariableName": "uiFeedback.infoMessage"
-						},
-						{
-							"variableTypeCheck": true,
-							"assignmentExpression": "",
-							"assignedVariableName": "uiFeedback.errorMessage"
-						},
-						{
-							"variableTypeCheck": true,
-							"assignmentExpression": "A new OTP code has been send to your business email",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.infoMessage"
 						}
 					],
@@ -2109,7 +2100,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-f10cef0d-c79e-42cf-9b74-2fd5b46535b4",
@@ -4189,6 +4181,50 @@
 				"width": 170,
 				"height": 124
 			}
+		},
+		{
+			"id": "assignmentNode-bebeaffd-1abe-43a5-8706-97d88587b15c",
+			"type": "assignmentNode",
+			"position": {
+				"x": 11280,
+				"y": 1420
+			},
+			"data": {
+				"id": "assignmentNode-bebeaffd-1abe-43a5-8706-97d88587b15c",
+				"type": "assignmentNode",
+				"position": {
+					"x": 11280,
+					"y": 1420
+				},
+				"previousNodeId": "whenNode-283d389f-c9b7-450c-8e47-a8725d0311ff",
+				"branching": "otherwise",
+				"agamaData": {
+					"assignments": [
+						{
+							"variableTypeCheck": true,
+							"assignmentExpression": "\"\"",
+							"assignedVariableName": "uiFeedback.errorMessage"
+						},
+						{
+							"variableTypeCheck": true,
+							"assignmentExpression": "\"A new OTP code has been send to your business email\"",
+							"assignedVariableName": "uiFeedback.infoMessage"
+						}
+					],
+					"nodeIcon": "material-symbols:equal",
+					"nodeColor": "",
+					"titleColor": "",
+					"descColor": "",
+					"displayName": "",
+					"hasComment": true,
+					"comment": ""
+				}
+			},
+			"measured": {
+				"width": 170,
+				"height": 124
+			},
+			"selected": true
 		}
 	],
 	"edges": [
@@ -6300,11 +6336,30 @@
 			},
 			"labelShowBg": true,
 			"sourceHandle": ""
+		},
+		{
+			"id": "whenNode-283d389f-c9b7-450c-8e47-a8725d0311ff-assignmentNode-bebeaffd-1abe-43a5-8706-97d88587b15c",
+			"type": "default",
+			"source": "whenNode-283d389f-c9b7-450c-8e47-a8725d0311ff",
+			"target": "assignmentNode-bebeaffd-1abe-43a5-8706-97d88587b15c",
+			"labelBgPadding": [
+				8,
+				4
+			],
+			"labelBgBorderRadius": 4,
+			"label": "otherwise",
+			"labelBgStyle": {
+				"fill": "#009688",
+				"color": "#ffffff",
+				"fillOpacity": 0.7
+			},
+			"labelShowBg": true,
+			"sourceHandle": "source_whenNode-283d389f-c9b7-450c-8e47-a8725d0311ff_otherwise"
 		}
 	],
 	"viewport": {
-		"x": -3912.22815954435,
-		"y": -363.3052630638688,
-		"zoom": 0.5
+		"x": -10469.122535587176,
+		"y": -1328.7955194114274,
+		"zoom": 1.0032204568963445
 	}
 }
