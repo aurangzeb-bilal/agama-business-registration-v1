@@ -3269,7 +3269,8 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-8755f004-46c1-4b18-8dc6-7f243848e263",
@@ -3359,7 +3360,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Phone confirmation failed. Try once more.",
+							"assignmentExpression": "\"Phone confirmation failed. Try once more.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -3376,7 +3377,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-fd3fcc65-6454-4594-acfe-76ac66214476",
