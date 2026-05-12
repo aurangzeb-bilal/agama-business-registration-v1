@@ -35,7 +35,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "assignmentNode-f964d32d-7ad6-4b3c-aedb-3097e891b7d0",
@@ -72,7 +72,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "callNode-e30a4e89-c844-42c0-87e9-8d55f816e1f7",
@@ -132,12 +133,12 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.infoMessage"
 						}
 					],
@@ -153,7 +154,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "repeatNode-813315cc-cd09-4f54-8034-89dd8bc517dd",
@@ -432,7 +434,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Unable to continue with this account",
+							"assignmentExpression": "\"Unable to continue with this account\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
@@ -463,7 +465,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-60f5bff2-b8ec-4513-98cc-496c7a2b7be5",
@@ -634,7 +637,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Phone verification failed. Please contact customer support",
+							"assignmentExpression": "\"Phone verification failed. Please contact customer support\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -650,7 +653,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-9cd3f4ad-4b44-4a42-a6b8-dc9b67425027",
@@ -969,7 +973,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"IncompletePersonalAccountSetup\"",
+					"returnVariable": "IncompletePersonalAccountSetup",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -977,7 +981,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-3c9ae79c-4918-4ad3-a556-4d589d9ab547",
@@ -1032,12 +1037,12 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.infoMessage"
 						}
 					],
@@ -1053,7 +1058,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "repeatNode-6cc7498c-5327-45bd-a33c-8605b3a80f32",
@@ -1168,8 +1174,8 @@
 			"id": "logNode-f25cd55b-9f5a-4eec-88f9-19c754a5ac13",
 			"type": "logNode",
 			"position": {
-				"x": 6280,
-				"y": 450
+				"x": 6413.900273680507,
+				"y": 33.584863169414064
 			},
 			"data": {
 				"id": "logNode-f25cd55b-9f5a-4eec-88f9-19c754a5ac13",
@@ -1194,14 +1200,16 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false,
+			"dragging": false
 		},
 		{
 			"id": "whenNode-a1c14330-5811-4ce0-832c-990ccb888e59",
 			"type": "whenNode",
 			"position": {
-				"x": 6530,
-				"y": 520
+				"x": 6721.2861052578655,
+				"y": 308.11385263744035
 			},
 			"data": {
 				"id": "whenNode-a1c14330-5811-4ce0-832c-990ccb888e59",
@@ -1235,7 +1243,9 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false,
+			"dragging": false
 		},
 		{
 			"id": "callNode-71f1a2d1-13a1-44e7-8a27-22dfce0362fc",
@@ -1358,7 +1368,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "whenNode-ad3d51b0-8ab6-40b6-af7c-dfb05e649bd5",
@@ -1441,7 +1452,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "whenNode-041c32c6-282b-4dae-878a-adb7b93af35c",
@@ -1504,7 +1516,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Failed to send OTP. Please try again.",
+							"assignmentExpression": "\"Failed to send OTP. Please try again or contact Customer Support\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -1521,7 +1533,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-e94443be-3d91-4775-baf7-890e2be919df",
@@ -1555,7 +1568,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "assignmentNode-2c53b9b8-088a-4c76-af22-7e957fb79fe9",
@@ -1586,12 +1600,12 @@
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.infoMessage"
 						}
 					],
@@ -1607,7 +1621,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "repeatNode-ee16ae11-acc6-4886-afae-178d66ba8dcd",
@@ -1889,7 +1904,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\"",
+					"returnVariable": "ExceededTheNumberOfAttemptsAllowed",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -1897,7 +1912,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "callNode-7a76dc1e-6cab-4345-9f10-1679496e11cb",
@@ -2010,7 +2026,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "whenNode-3140814c-f82f-403b-8c1c-377e0eed7cfb",
@@ -2051,7 +2068,8 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "assignmentNode-4c840bc4-3e25-4728-b0f2-7a81ba86be9a",
@@ -2073,22 +2091,12 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Failed to send OTP. Please try again.",
+							"assignmentExpression": "\"Failed to send OTP. Please try again.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
-							"assignedVariableName": "uiFeedback.infoMessage"
-						},
-						{
-							"variableTypeCheck": true,
-							"assignmentExpression": "",
-							"assignedVariableName": "uiFeedback.errorMessage"
-						},
-						{
-							"variableTypeCheck": true,
-							"assignmentExpression": "A new OTP code has been send to your business email",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.infoMessage"
 						}
 					],
@@ -2105,7 +2113,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-5544c8e5-3a14-4c21-b453-1af1bb1d64ef",
@@ -2278,7 +2287,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\"",
+					"returnVariable": "ExceededTheNumberOfAttemptsAllowed",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -2286,7 +2295,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "callNode-a0f690ae-55eb-436d-ac75-34a1efd82d68",
@@ -2618,12 +2628,12 @@
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						},
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "",
+							"assignmentExpression": "\"\"",
 							"assignedVariableName": "uiFeedback.infoMessage"
 						}
 					],
@@ -2639,7 +2649,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "repeatNode-a8a23993-366b-4909-86e5-dc81f6435ce8",
@@ -2746,7 +2757,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "callNode-8676db0e-bebd-4335-b8c3-f82b4cd8ac4a",
@@ -3324,7 +3336,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "assignmentNode-870d2850-0e9d-472a-af46-5a2617d79ae5",
@@ -3422,7 +3435,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\"",
+					"returnVariable": "ExceededTheNumberOfAttemptsAllowed",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -3430,7 +3443,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-5f36049a-7bd5-458d-bb77-c5d791945b54",
@@ -3485,7 +3499,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Business account creation failed. Please try again.",
+							"assignmentExpression": "\"Business account creation failed. Please try again.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -3501,7 +3515,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-b1af170d-0c4c-45cc-93b8-1e184eb07d2b",
@@ -3636,7 +3651,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\"",
+					"returnVariable": "ExceededTheNumberOfAttemptsAllowed",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -3644,7 +3659,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-e8c89f4b-ac8a-4978-b9c5-3e374db88b47",
@@ -3699,7 +3715,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "This business username is already taken. Please choose a different one.",
+							"assignmentExpression": "\"This business username is already taken. Please choose a different one.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -3715,7 +3731,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-67f38fdb-ee41-4fc0-9958-7dd8f21bf888",
@@ -3770,12 +3787,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "This business email is already registered. Please use a different one.",
-							"assignedVariableName": "uiFeedback.errorMessage"
-						},
-						{
-							"variableTypeCheck": false,
-							"assignmentExpression": "validation.message",
+							"assignmentExpression": "\"This business email is already registered. Please use a different one.\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -3791,7 +3803,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-8f27ed76-7bd6-4882-9d3d-dea88ba474b3",
@@ -3850,7 +3863,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\"",
+					"returnVariable": "ExceededTheNumberOfAttemptsAllowed",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -3858,7 +3871,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "whenNode-4833da35-6051-41a9-b0ba-bed7980f6544",
@@ -3968,7 +3982,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "whenNode-75d77a98-2b00-4f49-8c60-60867c371d86",
@@ -4018,7 +4033,7 @@
 			"type": "logNode",
 			"position": {
 				"x": 4780,
-				"y": -120
+				"y": -237.71452631253314
 			},
 			"data": {
 				"id": "logNode-e4c0ce3d-bf33-4a3d-b010-e400981c1e5a",
@@ -4045,7 +4060,9 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false,
+			"dragging": false
 		},
 		{
 			"id": "finishNode-02790d0a-bb13-4ac0-a0d5-8701bd5ad6fb",
@@ -4078,7 +4095,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "assignmentNode-3c62c4f7-49f3-4e1b-af23-8e5e2d8fd5d3",
@@ -4100,7 +4118,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Phone OTP failed. Try a different personal username.",
+							"assignmentExpression": "\"Phone OTP failed. Please contact Customer Support\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -4117,7 +4135,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-98522b69-39dc-4d18-8413-eea40a16c5ee",
@@ -4176,7 +4195,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\"",
+					"returnVariable": "ExceededTheNumberOfAttemptsAllowed",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -4184,7 +4203,91 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
+		},
+		{
+			"id": "assignmentNode-8fe44c56-dcfe-437f-91c2-46e40f464834",
+			"type": "assignmentNode",
+			"position": {
+				"x": 6971.2861052578655,
+				"y": 58.113852637440345
+			},
+			"data": {
+				"id": "assignmentNode-8fe44c56-dcfe-437f-91c2-46e40f464834",
+				"type": "assignmentNode",
+				"position": {
+					"x": 6971.2861052578655,
+					"y": 58.113852637440345
+				},
+				"previousNodeId": "whenNode-a1c14330-5811-4ce0-832c-990ccb888e59",
+				"branching": "otherwise",
+				"agamaData": {
+					"assignments": [
+						{
+							"variableTypeCheck": true,
+							"assignmentExpression": "validation.message",
+							"assignedVariableName": "uiFeedback.errorMessage"
+						}
+					],
+					"nodeIcon": "material-symbols:equal",
+					"nodeColor": "",
+					"titleColor": "",
+					"descColor": "",
+					"displayName": "",
+					"hasComment": true,
+					"comment": ""
+				}
+			},
+			"measured": {
+				"width": 170,
+				"height": 124
+			},
+			"selected": false
+		},
+		{
+			"id": "assignmentNode-1168ad7d-00ae-4f40-9e9c-216aef88218f",
+			"type": "assignmentNode",
+			"position": {
+				"x": 11280,
+				"y": 1420
+			},
+			"data": {
+				"id": "assignmentNode-1168ad7d-00ae-4f40-9e9c-216aef88218f",
+				"type": "assignmentNode",
+				"position": {
+					"x": 11280,
+					"y": 1420
+				},
+				"previousNodeId": "whenNode-3140814c-f82f-403b-8c1c-377e0eed7cfb",
+				"branching": "otherwise",
+				"agamaData": {
+					"assignments": [
+						{
+							"variableTypeCheck": true,
+							"assignmentExpression": "\"A new OTP code has been send to your business email\"",
+							"assignedVariableName": "uiFeedback.infoMessage"
+						},
+						{
+							"variableTypeCheck": true,
+							"assignmentExpression": "\"\"",
+							"assignedVariableName": "uiFeedback.errorMessage"
+						}
+					],
+					"nodeIcon": "material-symbols:equal",
+					"nodeColor": "",
+					"titleColor": "",
+					"descColor": "",
+					"displayName": "",
+					"hasComment": true,
+					"comment": ""
+				}
+			},
+			"measured": {
+				"width": 170,
+				"height": 124
+			},
+			"selected": false
 		}
 	],
 	"edges": [
@@ -6296,11 +6399,49 @@
 			},
 			"labelShowBg": true,
 			"sourceHandle": ""
+		},
+		{
+			"id": "whenNode-a1c14330-5811-4ce0-832c-990ccb888e59-assignmentNode-8fe44c56-dcfe-437f-91c2-46e40f464834",
+			"type": "default",
+			"source": "whenNode-a1c14330-5811-4ce0-832c-990ccb888e59",
+			"target": "assignmentNode-8fe44c56-dcfe-437f-91c2-46e40f464834",
+			"labelBgPadding": [
+				8,
+				4
+			],
+			"labelBgBorderRadius": 4,
+			"label": "otherwise",
+			"labelBgStyle": {
+				"fill": "#009688",
+				"color": "#ffffff",
+				"fillOpacity": 0.7
+			},
+			"labelShowBg": true,
+			"sourceHandle": "source_whenNode-a1c14330-5811-4ce0-832c-990ccb888e59_otherwise"
+		},
+		{
+			"id": "whenNode-3140814c-f82f-403b-8c1c-377e0eed7cfb-assignmentNode-1168ad7d-00ae-4f40-9e9c-216aef88218f",
+			"type": "default",
+			"source": "whenNode-3140814c-f82f-403b-8c1c-377e0eed7cfb",
+			"target": "assignmentNode-1168ad7d-00ae-4f40-9e9c-216aef88218f",
+			"labelBgPadding": [
+				8,
+				4
+			],
+			"labelBgBorderRadius": 4,
+			"label": "otherwise",
+			"labelBgStyle": {
+				"fill": "#009688",
+				"color": "#ffffff",
+				"fillOpacity": 0.7
+			},
+			"labelShowBg": true,
+			"sourceHandle": "source_whenNode-3140814c-f82f-403b-8c1c-377e0eed7cfb_otherwise"
 		}
 	],
 	"viewport": {
-		"x": 0,
-		"y": 0,
-		"zoom": 1
+		"x": -9566.66661366025,
+		"y": -865.3489047626636,
+		"zoom": 0.679610261418368
 	}
 }
