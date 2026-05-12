@@ -153,7 +153,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "repeatNode-3c4ddea5-87e9-4258-8f7f-4c5dd9de4d1e",
@@ -634,7 +634,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Phone verification failed. Please contact customer support",
+							"assignmentExpression": "\"Phone verification failed. Please contact customer support\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -650,7 +650,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-9a2674f0-9835-4648-8e0e-f7a8a2b91cdf",
@@ -6299,8 +6300,8 @@
 		}
 	],
 	"viewport": {
-		"x": -145.2281595443501,
-		"y": 215.69473693613122,
+		"x": -919.2281595443501,
+		"y": 168.69473693613122,
 		"zoom": 0.5
 	}
 }
