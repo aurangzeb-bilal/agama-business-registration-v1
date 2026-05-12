@@ -3716,7 +3716,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-f0e774fe-64a6-4225-ac71-2b4d07c165ea",
@@ -3903,7 +3903,8 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-a5297fab-0600-4b40-a725-69f953f96c29",
@@ -4013,7 +4014,8 @@
 			"measured": {
 				"width": 110,
 				"height": 60
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "logNode-186441f7-4b3e-4178-a24e-8c116f3773c5",
@@ -4102,7 +4104,7 @@
 					"assignments": [
 						{
 							"variableTypeCheck": true,
-							"assignmentExpression": "Phone OTP failed. Try a different personal username.",
+							"assignmentExpression": "\"Phone verification failed. Please contact customer support\"",
 							"assignedVariableName": "uiFeedback.errorMessage"
 						}
 					],
@@ -4119,7 +4121,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "logNode-cd29ddd6-c4ab-4f70-8ffb-460102fa4014",
@@ -6364,8 +6367,8 @@
 		}
 	],
 	"viewport": {
-		"x": -3700.0393018401464,
-		"y": -253.71123796672828,
+		"x": -1848.0393018401464,
+		"y": 322.2887620332717,
 		"zoom": 0.5
 	}
 }
