@@ -3870,7 +3870,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "whenNode-45bad521-036f-41a0-b298-515ab5efc450",
@@ -4191,7 +4191,7 @@
 					"hasComment": false,
 					"comment": "",
 					"flowfilename": "",
-					"returnVariable": "\"ExceededTheNumberOfAttemptsAllowed\"",
+					"returnVariable": "ExceededTheNumberOfAttemptsAllowed",
 					"finishMode": "withFailure",
 					"nodeIcon": "material-symbols:line-end-square-rounded"
 				}
@@ -4199,7 +4199,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "assignmentNode-bebeaffd-1abe-43a5-8706-97d88587b15c",
@@ -6377,8 +6378,8 @@
 		}
 	],
 	"viewport": {
-		"x": -2410.0393018401464,
-		"y": 142.28876203327172,
+		"x": -282.03930184014644,
+		"y": 232.28876203327172,
 		"zoom": 0.5
 	}
 }
