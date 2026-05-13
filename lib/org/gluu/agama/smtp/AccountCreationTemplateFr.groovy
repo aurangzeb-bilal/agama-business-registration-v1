@@ -26,26 +26,26 @@ class AccountCreationTemplateFr {
                     <tr>
                       <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;font-size:16px;color:#51545E;line-height:1.625;">
                         <p>Bonjour,</p>
-                        <p>Bienvenue sur <strong>Phi Wallet</strong> ! Votre parcours de protection patrimoniale commence maintenant.</p>
+                        <p>Bienvenue sur <strong>Phi Wallet Business</strong> ! Votre compte d'entreprise est désormais actif.</p>
 
-                        <p><strong>Votre nom d'utilisateur :</strong></p>
+                        <p><strong>Votre nom d'utilisateur d'entreprise :</strong></p>
                         <div style="text-align:center;margin:30px 0;">
                           <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:28px;font-weight:600;letter-spacing:2px;padding:10px 20px;border-radius:4px;">
                             """ + userName + """
                           </div>
                         </div>
 
-                        <p><strong>Prochaine Ã©tape : VÃ©rifier votre identitÃ©</strong></p>
-                        <p>Pour garantir que votre or reste exclusivement sous votre contrÃ´le, nous devons vÃ©rifier votre identitÃ©. Cette mesure de sÃ©curitÃ© protÃ¨ge votre or et vous confÃ¨re tous les droits de propriÃ©tÃ©.</p>
+                        <p><strong>Prochaine étape : Vérifier l'identité de votre entreprise</strong></p>
+                        <p>Pour activer votre compte et bénéficier d'un accès complet, nous devons vérifier votre entreprise. Cette étape confirme la propriété et protège vos actifs professionnels.</p>
 
                         <div style="text-align:center;margin:30px 0;">
-                          <a href="https://link.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;">
+                          <a href="https://link.business.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;">
                             Ouvrir l'application
                           </a>
                         </div>
 
-                        <p>Merci dâavoir choisi Phi Wallet.</p>
-                        <p style="margin-top:30px;">Cordialement,<br>LâÃ©quipe Phi Wallet</p>
+                        <p>Si vous avez des questions, n'hésitez pas à nous contacter. Merci d'avoir choisi Phi Wallet Business !</p>
+                        <p style="margin-top:30px;">Cordialement,<br>L'équipe Phi Wallet Business</p>
                       </td>
                     </tr>
                   </tbody>
@@ -67,9 +67,10 @@ class AccountCreationTemplateFr {
                           <a href="https://www.linkedin.com/company/phiwallet"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/linkedin.png" style="height:20px;margin:0 5px;"></a>
                         </p>
                         <p style="margin-top:10px;color:#A8AAAF;">
-                          Phi Wallet Unipessoal LDA<br>
-                          Avenida da Liberdade 262 R/C<br>
-                          1250-149 Lisbonne, Portugal
+                          Phi Wallet, Unipessoal, LDA<br>
+                          Avenida Dom João II, Lote 11902/A Escritório 2.10<br>
+                          Lisboa - 1990-366<br>
+                          Portugal
                         </p>
                       </td>
                     </tr>
@@ -86,7 +87,7 @@ class AccountCreationTemplateFr {
 """;
 
         return Map.of(
-            "subject", "Bienvenue sur Phi Wallet",
+            "subject", "Commencez avec Phi Wallet Business",
             "body", html
         );
     }
