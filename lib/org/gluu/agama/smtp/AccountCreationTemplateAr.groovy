@@ -27,28 +27,28 @@ class AccountCreationTemplateAr {
                   <tbody>
                     <tr>
                       <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;color:#51545E;font-size:16px;line-height:1.8;text-align:right;">
-                        <p>مرحباً،</p>
-                        <p>أهلاً بك في <strong>فاي والت (Phi Wallet)</strong>! ‏رحلتك نحو حماية مستقبلك المالي تبدأ الآن.</p>
+                        <p>مرحبًا،</p>
+                        <p>أهلاً بك في <strong>Phi Wallet Business</strong>! حسابك التجاري نشط الآن.</p>
 
-                        <p><strong>اسم المستخدم الخاص بك:</strong></p>
+                        <p><strong>اسم المستخدم التجاري الخاص بك:</strong></p>
                         <div style="text-align:center;margin:30px 0;">
                           <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:28px;font-weight:600;letter-spacing:2px;padding:10px 20px;border-radius:4px;">
                             """ + userName + """
                           </div>
                         </div>
 
-                        <p><strong>الخطوة التالية: ‏‏التحقق من هويتك</strong></p>
-                        <p>لضمان بقاء ذهبك تحت سيطرتك الحصرية، نحتاج إلى التحقق من هويتك. يحمي هذا الإجراء الأمني ذهبك ويمنحك حقوق الملكية الكاملة.</p>
+                        <p><strong>الخطوة التالية: التحقق من هويتك التجارية</strong></p>
+                        <p>لتفعيل نشاطك التجاري وفتح الوصول الكامل، نحتاج إلى التحقق منه. تؤكد هذه الخطوة الملكية وتحمي أصولك التجارية.</p>
 
                         <div style="text-align:center;margin:30px 0;">
-                          <a href="https://link.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;display:inline-block;">
+                          <a href="https://link.business.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;display:inline-block;">
                             افتح التطبيق
                           </a>
                         </div>
 
-                        <p>إذا كانت لديك أي أسئلة، يسعدنا دائماً مساعدتك. شكراً لاختيارك فاي والت!</p>
+                        <p>إذا كانت لديك أي أسئلة، نحن على بُعد رسالة. شكراً لاختيارك Phi Wallet Business!</p>
 
-                        <p style="margin-top:30px;">مع أطيب التحيات،<br>فريق فاي والت</p>
+                        <p style="margin-top:30px;">مع أطيب التحيات،<br>فريق Phi Wallet Business</p>
 
                       </td>
                     </tr>
@@ -72,9 +72,9 @@ class AccountCreationTemplateAr {
                           <a href="https://www.linkedin.com/company/phiwallet" style="margin:0 5px;"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/linkedin.png" style="height:20px;"></a>
                         </p>
                         <p style="margin-top:10px;line-height:20px;color:#A8AAAF;font-size:12px;">
-                          Phi Wallet Unipessoal LDA<br>
-                          Avenida da Liberdade 262 R/C<br>
-                          1250-149 Lisbon<br>
+                          Phi Wallet, Unipessoal, LDA<br>
+                          Avenida Dom João II, Lote 11902/A Escritório 2.10<br>
+                          Lisboa - 1990-366<br>
                           Portugal
                         </p>
                       </td>
@@ -93,7 +93,7 @@ class AccountCreationTemplateAr {
 """;
 
         return Map.of(
-            "subject", "مرحباً بك في Phi Wallet",
+            "subject", "ابدأ مع Phi Wallet Business",
             "body", html
         );
     }

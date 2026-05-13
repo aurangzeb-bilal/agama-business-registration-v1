@@ -18,8 +18,8 @@
     "configs": {
         "code": {},
         "org.gluu.agama.businessregistration.verifyphoneotp": {},
-        "org.gluu.agama.businessregistration.signup": {},
-        "businessregistration": {}
+        "businessregistration": {},
+        "org.gluu.agama.businessregistration.signup": {}
     },
     "name": "agama-business-registration-v1"
 }

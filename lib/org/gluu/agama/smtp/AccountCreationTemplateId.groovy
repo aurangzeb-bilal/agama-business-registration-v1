@@ -21,26 +21,26 @@ class AccountCreationTemplateId {
             <tr>
               <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;font-size:16px;color:#51545E;line-height:1.625;">
                 <p>Halo,</p>
-                <p>Selamat datang di <strong>Phi Wallet</strong>! Perjalanan perlindungan kekayaan Anda dimulai sekarang.</p>
+                <p>Selamat datang di <strong>Phi Wallet Business</strong>! Akun bisnis Anda kini aktif.</p>
 
-                <p><strong>Nama pengguna Anda:</strong></p>
+                <p><strong>Nama pengguna bisnis Anda:</strong></p>
                 <div style="text-align:center;margin:30px 0;">
                   <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:28px;font-weight:600;letter-spacing:2px;padding:10px 20px;border-radius:4px;">
                     """ + userName + """
                   </div>
                 </div>
 
-                <p><strong>Langkah Selanjutnya: Memverifikasi identitas Anda</strong></p>
-                <p>Untuk memastikan emas Anda tetap sepenuhnya berada di bawah kendali Anda, kami perlu memverifikasi identitas Anda. Langkah keamanan ini melindungi emas Anda dan memberikan Anda hak kepemilikan penuh.</p>
+                <p><strong>Langkah Selanjutnya: Verifikasi identitas bisnis Anda</strong></p>
+                <p>Untuk mengaktifkan akun Anda dan mendapatkan akses penuh, kami perlu memverifikasi bisnis Anda. Langkah ini mengonfirmasi kepemilikan dan melindungi aset bisnis Anda.</p>
 
                 <div style="text-align:center;margin:30px 0;">
-                  <a href="https://link.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;">
+                  <a href="https://link.business.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;">
                     Buka Aplikasi
                   </a>
                 </div>
 
-                <p>Terima kasih telah memilih Phi Wallet.</p>
-                <p style="margin-top:30px;">Salam hangat,<br>Tim Phi Wallet</p>
+                <p>Jika Anda memiliki pertanyaan, kami siap membantu. Terima kasih telah memilih Phi Wallet Business!</p>
+                <p style="margin-top:30px;">Salam hangat,<br>Tim Phi Wallet Business</p>
               </td>
             </tr>
           </tbody>
@@ -58,9 +58,10 @@ class AccountCreationTemplateId {
                   <a href="https://www.linkedin.com/company/phiwallet"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/linkedin.png" style="height:20px;margin:0 5px;"></a>
                 </p>
                 <p style="margin-top:10px;color:#A8AAAF;">
-                  Phi Wallet Unipessoal LDA<br>
-                  Avenida da Liberdade 262 R/C<br>
-                  1250-149 Lisbon, Portugal
+                  Phi Wallet, Unipessoal, LDA<br>
+                  Avenida Dom João II, Lote 11902/A Escritório 2.10<br>
+                  Lisboa - 1990-366<br>
+                  Portugal
                 </p>
               </td>
             </tr>
@@ -74,7 +75,7 @@ class AccountCreationTemplateId {
 """;
 
         return Map.of(
-            "subject", "Selamat Datang di Phi Wallet",
+            "subject", "Mulai dengan Phi Wallet Business",
             "body", html
         );
     }
