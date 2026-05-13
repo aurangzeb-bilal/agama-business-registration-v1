@@ -636,7 +636,28 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
         return result;
     }
 
-    
+    @Override
+    public Map<String, Object> validateBusinessPassword(Map<String, String> profile) {
+        // Validates step 4a (password screen). Called from the password subflow
+        // org.gluu.agama.businessregistration.password
+        Map<String, Object> result = new HashMap<>();
+
+        if (profile.get(PASSWORD) == null || !Pattern.matches('''^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!"#$%&'()*+,-./:;<=>?@[\\\\]^_`{|}~])[!-~&&[^ ]]{12,24}$''', profile.get(PASSWORD))) {
+            result.put("valid", false);
+            result.put("message", "Invalid password. Must be 12 to 24 characters with uppercase, lowercase, digit, and special character.");
+            return result;
+        }
+
+        if (!profile.get(PASSWORD).equals(profile.get(CONFIRM_PASSWORD))) {
+            result.put("valid", false);
+            result.put("message", "Password and confirm password do not match.");
+            return result;
+        }
+
+        result.put("valid", true);
+        result.put("message", "");
+        return result;
+    }
 
     @Override
     public Map<String, String> getUserEntityByMail(String email) {
