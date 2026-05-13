@@ -2809,7 +2809,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true,
+			"selected": false,
 			"dragging": false
 		},
 		{
@@ -3062,7 +3062,8 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": false
 		},
 		{
 			"id": "finishNode-34b720c7-dcc8-4a75-9d65-5ae93afeb3ca",
@@ -3145,8 +3146,8 @@
 			"id": "logNode-8755f004-46c1-4b18-8dc6-7f243848e263",
 			"type": "logNode",
 			"position": {
-				"x": 14780,
-				"y": 1710
+				"x": 14782,
+				"y": 1596
 			},
 			"data": {
 				"id": "logNode-8755f004-46c1-4b18-8dc6-7f243848e263",
@@ -3173,7 +3174,9 @@
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true,
+			"dragging": false
 		},
 		{
 			"id": "finishNode-471ebf2f-f23f-4038-8f82-5c40dfb3dde9",
@@ -4345,7 +4348,7 @@
 				},
 				"previousNodeId": "triggerNode-134d3e0c-a70a-4ac4-8215-b3c34a805612",
 				"agamaData": {
-					"logMessage": " \"Second OTP subflow result: \" secondOtpResult",
+					"logMessage": "\"Second OTP subflow result: \" secondOtpResult",
 					"logLevel": "info",
 					"nodeIcon": "octicon:log-16",
 					"nodeColor": "",
@@ -6755,8 +6758,8 @@
 		}
 	],
 	"viewport": {
-		"x": -13098.689998683956,
-		"y": -1600.7739915442726,
+		"x": -13877.689998683956,
+		"y": -1364.7739915442726,
 		"zoom": 1
 	}
 }
