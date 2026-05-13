@@ -42,8 +42,8 @@ Repeat 4 times max
                     kycOk = Call service isPersonalVerified personalUid
                     When kycOk is false
                          Log "@error MWAPP gate failed post-OTP for: " personalUid
-                         it_jaxlo = {success:false, error: "IncompletePersonalAccountSetup"}
-                         Finish it_jaxlo
+                         it_mkvts = {success:false, error: "IncompletePersonalAccountSetup"}
+                         Finish it_mkvts
                     Log "@info MWAPP gate passed - entering business profile loop"
                     uiFeedback.errorMessage = ""
                     uiFeedback.infoMessage = ""
@@ -75,8 +75,8 @@ Repeat 4 times max
                                                        Log "@info Business email OTP resend requested"
                                                        When emailResendCount is 3
                                                             Log "@error Email OTP resend exceeded"
-                                                            it_jxekh = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                                            Finish it_jxekh
+                                                            it_mwzzy = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                                            Finish it_mwzzy
                                                        emailResendCount = Call org.gluu.agama.newregistration.CounterHelper#increment emailResendCount
                                                        Log "@info Email resend attempt: " emailResendCount
                                                        emailOtpCode = Call service sendEmail businessProfile.mail businessProfile.lang
@@ -91,8 +91,8 @@ Repeat 4 times max
                                                        emailValidationAttempts = Call org.gluu.agama.newregistration.CounterHelper#increment emailValidationAttempts
                                                        When emailValidationAttempts is 4
                                                             Log "@error Email OTP validation exceeded"
-                                                            it_woknk = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                                            Finish it_woknk
+                                                            it_dcjml = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                                            Finish it_dcjml
                                                        Otherwise
                                                             emailOtpOk = Call service validateEmailOTP businessProfile.mail emailOtpCreds.passcode
                                                             When emailOtpOk is true
@@ -119,7 +119,7 @@ Repeat 4 times max
                                                                            Otherwise
                                                                                 Log "@info Second OTP sent for business phone confirmation"
                                                                                 secondOtpResult = Trigger org.gluu.agama.businessregistration.verifyphoneotp service personalPhone businessLang verificationMethod2
-                                                                                Log "@info "  "Second OTP subflow result: " secondOtpResult
+                                                                                Log "@info Second OTP subflow result: " secondOtpResult
                                                                                 When secondOtpResult.success is true
                                                                                      //   Step 12: stamp telephoneNumber + phoneNumberVerified
                                                                                      phoneVerified = Call service markPhoneAsVerified businessProfile.uid personalPhone
@@ -137,8 +137,8 @@ Repeat 4 times max
                                                                                           Finish secondOtpResult
                                                                                      uiFeedback.errorMessage = "Phone confirmation failed. Try once more."
                                                                       Log "@error Confirmation phone loop exhausted"
-                                                                      it_nkjlk = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                                                      Finish it_nkjlk
+                                                                      it_fqotf = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                                                      Finish it_fqotf
                                                                  Otherwise
                                                                       Log "@error Business user creation failed - returned null"
                                                                       it_create = {success:false, error: "BusinessCreationFailed"}
@@ -149,8 +149,8 @@ Repeat 4 times max
                                                                  uiFeedback.infoMessage = ""
                                              //   Email loop fell through without Finish - exhausted
                                              Log "@error Email OTP loop completed without success"
-                                             it_sexch = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                             Finish it_sexch
+                                             it_gzxga = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                             Finish it_gzxga
                                    Otherwise
                                         Log "@error Business username already taken: " businessProfile.uid
                                         uiFeedback.errorMessage = "This business username is already taken. Please choose a different one."
@@ -161,8 +161,8 @@ Repeat 4 times max
                               uiFeedback.errorMessage = validation.message
                     //   Business profile loop exhausted (4 attempts)
                     Log "@error Business profile loop exhausted"
-                    it_apezo = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                    Finish it_apezo
+                    it_npkwn = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                    Finish it_npkwn
                Otherwise
                     //   First OTP failed - surface specific subflow errors immediately
                     When firstOtpResult.error is "ExceededTheNumberOfAttemptsAllowed"
@@ -174,5 +174,5 @@ Repeat 4 times max
                     uiFeedback.errorMessage = "Phone OTP failed. Please contact Customer Support"
 //   Outer Repeat (3 attempts) exhausted - too many attempts
 Log "@error Personal lookup loop exhausted"
-it_hlada = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-Finish it_hlada
+it_upswk = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+Finish it_upswk
