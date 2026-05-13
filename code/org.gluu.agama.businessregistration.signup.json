@@ -174,20 +174,21 @@
 				"previousNodeId": "assignmentNode-4b879022-39ef-4618-8bdd-ed891f4c8dac",
 				"agamaData": {
 					"nodeIcon": "material-symbols:event-repeat-outline-rounded",
-					"maxIteration": "3",
+					"maxIteration": "4",
 					"maxIterationVariableName": "",
 					"nodeColor": "",
 					"titleColor": "",
 					"descColor": "",
 					"displayName": "REPEAT",
 					"hasComment": true,
-					"comment": "  Outer loop on personal-username entry - 3 attempts max"
+					"comment": "  Outer loop on personal-username entry - 4 attempts max"
 				}
 			},
 			"measured": {
 				"width": 170,
 				"height": 124
-			}
+			},
+			"selected": true
 		},
 		{
 			"id": "rrfNode-8385bba2-ecb0-4bb4-a095-796f298cbb2b",
@@ -452,7 +453,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": true
+			"selected": false
 		},
 		{
 			"id": "logNode-60f5bff2-b8ec-4513-98cc-496c7a2b7be5",
@@ -6505,8 +6506,8 @@
 		}
 	],
 	"viewport": {
-		"x": -2104.863787304685,
-		"y": 40.7649633727105,
-		"zoom": 1.0100556728221217
+		"x": 0,
+		"y": 0,
+		"zoom": 1
 	}
 }
