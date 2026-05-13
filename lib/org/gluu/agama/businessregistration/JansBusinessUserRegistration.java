@@ -211,17 +211,23 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
 
             if (mobileAttr != null) {
                 if (mobileAttr.getValue() != null && !mobileAttr.getValue().isEmpty()) {
-                    mobile = mobileAttr.getValue();
-                } else if (mobileAttr.getValues() != null && !mobileAttr.getValues().isEmpty()) {
-                    Object first = mobileAttr.getValues().get(0);
-                    if (first != null) mobile = first.toString();
-                }
+                mobile = mobileAttr.getValue();
+            } else if (mobileAttr.getValues() != null && !mobileAttr.getValues().isEmpty()) {
+                Object first = mobileAttr.getValues().get(0);
+                if (first != null) mobile = first.toString();
+            }
             }
 
             if (mobile == null || mobile.trim().isEmpty()) {
                 logger.info("Personal user uid={} has no mobile attribute", personalUid);
                 return result;
             }
+
+            String phoneVerified = getSingleValuedAttr(fullUser, PHONE_VERIFIED);
+                if (phoneVerified == null || !"true".equalsIgnoreCase(phoneVerified)) {
+                logger.info("Personal user uid={} phone not verified (phoneNumberVerified={})", personalUid, phoneVerified);
+                return result;
+        }
             
             String inum = getSingleValuedAttr(fullUser, INUM_ATTR);
             String lang = getSingleValuedAttr(fullUser, "lang");
