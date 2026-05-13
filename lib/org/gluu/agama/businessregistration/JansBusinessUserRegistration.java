@@ -612,11 +612,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             return result;
         }
 
-        if (profile.get(PASSWORD) == null || !Pattern.matches('''^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!"#$%&'()*+,-./:;<=>?@[\\\\]^_`{|}~])[!-~&&[^ ]]{12,24}$''', profile.get(PASSWORD))) {
-             result.put("valid", false);
-             result.put("message", "Invalid password. Must be at least 12 to 24 characters with uppercase, lowercase, digit, and special character.");
-             return result;
-        }
+        
         if (profile.get(ORG_NAME) == null || !Pattern.matches('''^[-A-Za-z0-9 .&',]{2,100}$''', profile.get(ORG_NAME))) {
             result.put("valid", false);
             result.put("message", "Invalid organization name. Must be 2-100 characters using letters, digits, spaces, and . & ' - ,");
@@ -634,16 +630,13 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             result.put("message", "Invalid residence country. Must be exactly two uppercase letters.");
             return result;
         }
-        if (!profile.get(PASSWORD).equals(profile.get(CONFIRM_PASSWORD))) {
-            result.put("valid", false);
-            result.put("message", "Password and confirm password do not match.");
-            return result;
-        }
 
         result.put("valid", true);
         result.put("message", "");
         return result;
     }
+
+    
 
     @Override
     public Map<String, String> getUserEntityByMail(String email) {
