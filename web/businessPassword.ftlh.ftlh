@@ -1,12 +1,18 @@
 [#ftl output_format="HTML"]
- <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Blank_Template</title>
-      </head>
-      <body>
-      </body>
-    </html>
+<!DOCTYPE html>
+<html lang="en">
+<head></head>
+<body>
+
+  
+    <form method="post">
+      <input type="password" name="userPassword">
+      <input type="password" name="confirmPassword">
+      <button type="submit" name="back" value="">Continue</button>
+      <button type="submit" name="back" value="yes">Back</button>
+    </form>
+  
+</body>
+
+
+</html>
