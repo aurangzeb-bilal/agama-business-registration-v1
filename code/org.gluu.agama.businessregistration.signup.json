@@ -2747,6 +2747,11 @@
 							"variableTypeCheck": false,
 							"assignmentExpression": "phoneConfirmInput.verificationMethod",
 							"assignedVariableName": "verificationMethod2"
+						},
+						{
+							"variableTypeCheck": true,
+							"assignmentExpression": "businessProfile.lang",
+							"assignedVariableName": "businessLang"
 						}
 					],
 					"nodeIcon": "material-symbols:equal",
@@ -2768,8 +2773,8 @@
 			"id": "callNode-8676db0e-bebd-4335-b8c3-f82b4cd8ac4a",
 			"type": "callNode",
 			"position": {
-				"x": 13327.743184728173,
-				"y": 1976.957451598004
+				"x": 13323.743184728173,
+				"y": 1975.957451598004
 			},
 			"data": {
 				"id": "callNode-8676db0e-bebd-4335-b8c3-f82b4cd8ac4a",
@@ -2787,7 +2792,7 @@
 					"callType": "Call method on instance",
 					"arguments": [
 						"personalPhone",
-						"businessProfile.lang",
+						"businessLang",
 						"verificationMethod2"
 					],
 					"nodeIcon": "material-symbols:code",
@@ -2804,7 +2809,7 @@
 				"width": 170,
 				"height": 124
 			},
-			"selected": false,
+			"selected": true,
 			"dragging": false
 		},
 		{
@@ -4286,8 +4291,8 @@
 			"id": "triggerNode-134d3e0c-a70a-4ac4-8215-b3c34a805612",
 			"type": "triggerNode",
 			"position": {
-				"x": 13913.544713459642,
-				"y": 2026.5691692915163
+				"x": 13883.544713459642,
+				"y": 2021.5691692915163
 			},
 			"data": {
 				"id": "triggerNode-134d3e0c-a70a-4ac4-8215-b3c34a805612",
@@ -4301,10 +4306,10 @@
 					"nodeIcon": "fluent-mdl2:trigger-approval",
 					"flowFileName": "org.gluu.agama.businessregistration.verifyphoneotp",
 					"arguments": [
-						"businessProfile.lang",
-						"verificationMethod2",
 						"service",
-						"personalPhone"
+						"personalPhone",
+						"businessLang",
+						"verificationMethod2"
 					],
 					"asssignedVariableName": "secondOtpResult",
 					"exceptionVariableField": "",
@@ -6750,8 +6755,8 @@
 		}
 	],
 	"viewport": {
-		"x": -6189.886655836119,
-		"y": -710.8869957721363,
-		"zoom": 0.5
+		"x": -13098.689998683956,
+		"y": -1600.7739915442726,
+		"zoom": 1
 	}
 }
