@@ -29,7 +29,7 @@ class EmailRegistrationOtpPt {
                       <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;color:#51545E;font-size:16px;line-height:1.625;">
                         <p>Olá,</p>
 
-                        <p>Insira o código de 6 dígitos abaixo para verificar seu endereço de e-mail.</p>
+                        <p>Insira o código de 6 dígitos abaixo para verificar o seu email e continuar a configuração da sua conta empresarial.</p>
 
                         <div style="text-align:center;margin:30px 0;">
                           <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:40px;font-weight:600;letter-spacing:6px;padding:10px 20px;border-radius:4px;">
@@ -37,11 +37,11 @@ class EmailRegistrationOtpPt {
                           </div>
                         </div>
 
-                        <p>Se não foi você que fez este pedido, pode ignorar esta mensagem com segurança. A sua conta continuará segura.</p>
+                        <p>Se não solicitou este pedido, pode ignorar esta mensagem com segurança. A sua conta continuará segura.</p>
                         <p>Obrigado pela sua confiança.</p>
 
                         <p style="margin-top:30px;">Com os melhores cumprimentos,</p>
-                        <p style="margin-top:30px;">Equipe Phi Wallet</p>
+                        <p style="margin-top:30px;">Equipa Phi Wallet Business</p>
 
                       </td>
                     </tr>
@@ -65,9 +65,9 @@ class EmailRegistrationOtpPt {
                           <a href="https://www.linkedin.com/company/phiwallet" style="margin:0 5px;"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/linkedin.png" style="height:20px;"></a>
                         </p>
                         <p style="margin-top:10px;line-height:20px;color:#A8AAAF;font-size:12px;">
-                          Phi Wallet Unipessoal LDA<br>
-                          Avenida da Liberdade 262 R/C<br>
-                          1250-149 Lisboa<br>
+                          Phi Wallet, Unipessoal, LDA<br>
+                          Avenida Dom João II, Lote 11902/A Escritório 2.10<br>
+                          Lisboa - 1990-366<br>
                           Portugal
                         </p>
                       </td>
@@ -86,7 +86,7 @@ class EmailRegistrationOtpPt {
 """;
 
         return Map.of(
-            "subject", "Código de verificação - Phi Wallet",
+            "subject", "Verifique a sua conta empresarial",
             "body", html
         );
     }
