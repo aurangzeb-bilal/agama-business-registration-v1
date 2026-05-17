@@ -42,8 +42,8 @@ Repeat 4 times max
                     kycOk = Call service isPersonalVerified personalUid
                     When kycOk is false
                          Log "@error MWAPP gate failed post-OTP for: " personalUid
-                         it_mkvts = {success:false, error: "IncompletePersonalAccountSetup"}
-                         Finish it_mkvts
+                         it_bboca = {success:false, error: "IncompletePersonalAccountSetup"}
+                         Finish it_bboca
                     Log "@info MWAPP gate passed - entering business profile loop"
                     uiFeedback.errorMessage = ""
                     uiFeedback.infoMessage = ""
@@ -58,99 +58,105 @@ Repeat 4 times max
                               When businessMailUser.empty is true
                                    businessUidUser = Call service getUserEntityByUsername businessProfile.uid
                                    When businessUidUser.empty is true
-                                        //   Step 8: send email OTP
-                                        emailOtpCode = Call service sendEmail businessProfile.mail businessProfile.lang
-                                        When emailOtpCode is null
-                                             uiFeedback.errorMessage = "Failed to send OTP. Please try again or contact Customer Support"
-                                        Otherwise
-                                             Log "@info Business email OTP sent to: " businessProfile.mail
-                                             emailResendCount = 0
-                                             emailValidationAttempts = 0
-                                             uiFeedback.errorMessage = ""
-                                             uiFeedback.infoMessage = ""
-                                             Repeat 20 times max
-                                                  uiFeedback.email = businessProfile.mail
-                                                  emailOtpCreds = RRF "otp.ftlh" uiFeedback
-                                                  When emailOtpCreds.resend is "yes"
-                                                       Log "@info Business email OTP resend requested"
-                                                       When emailResendCount is 3
-                                                            Log "@error Email OTP resend exceeded"
-                                                            it_mwzzy = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                                            Finish it_mwzzy
-                                                       emailResendCount = Call org.gluu.agama.newregistration.CounterHelper#increment emailResendCount
-                                                       Log "@info Email resend attempt: " emailResendCount
-                                                       emailOtpCode = Call service sendEmail businessProfile.mail businessProfile.lang
-                                                       When emailOtpCode is null
-                                                            uiFeedback.errorMessage = "Failed to send OTP. Please try again."
-                                                            uiFeedback.infoMessage = ""
-                                                       Otherwise
-                                                            uiFeedback.infoMessage = "A new OTP code has been send to your business email"
-                                                            uiFeedback.errorMessage = ""
-                                                  Otherwise
-                                                       Log "@info Business email OTP submitted by user"
-                                                       emailValidationAttempts = Call org.gluu.agama.newregistration.CounterHelper#increment emailValidationAttempts
-                                                       When emailValidationAttempts is 4
-                                                            Log "@error Email OTP validation exceeded"
-                                                            it_dcjml = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                                            Finish it_dcjml
-                                                       Otherwise
-                                                            emailOtpOk = Call service validateEmailOTP businessProfile.mail emailOtpCreds.passcode
-                                                            When emailOtpOk is true
-                                                                 Log "@info Business email OTP verified - creating business user"
-                                                                 //   Step 9: create business user in LDAP with jansExtUid linkage
-                                                                 businessInum = Call service addNewBusinessUser businessProfile personalInum personalPhone
-                                                                 When businessInum is not null
-                                                                      Log "@info Business user created with inum: " businessInum
-                                                                      //   Send welcome email to business email
-                                                                      sendemailStatus = Call service sendAccountCreationNotificationEmail businessProfile.mail businessProfile.uid businessProfile.lang
-                                                                      Log "@info Welcome email status: " sendemailStatus
-                                                                      //   Step 10+: business-phone confirmation loop - 3 attempts max
-                                                                      uiFeedback.phone = personalPhone
-                                                                      uiFeedback.errorMessage = ""
-                                                                      uiFeedback.infoMessage = ""
-                                                                      Repeat 3 times max
-                                                                           phoneConfirmInput = RRF "ConfirmBusinessPhone.ftlh" uiFeedback
-                                                                           verificationMethod2 = phoneConfirmInput.verificationMethod
-                                                                           businessLang = businessProfile.lang
-                                                                           secondSend = Call service sendOTPCode personalPhone businessLang verificationMethod2
-                                                                           When secondSend is null
-                                                                                Log "@error Second OTP send failed"
-                                                                                uiFeedback.errorMessage = "Failed to send confirmation OTP. Please try again."
-                                                                           Otherwise
-                                                                                Log "@info Second OTP sent for business phone confirmation"
-                                                                                secondOtpResult = Trigger org.gluu.agama.businessregistration.verifyphoneotp service personalPhone businessLang verificationMethod2
-                                                                                Log "@info Second OTP subflow result: " secondOtpResult
-                                                                                When secondOtpResult.success is true
-                                                                                     //   Step 12: stamp telephoneNumber + phoneNumberVerified
-                                                                                     phoneVerified = Call service markPhoneAsVerified businessProfile.uid personalPhone
-                                                                                     Log "@info Business phone marked verified: " phoneVerified
-                                                                                     //   Step 13: acknowledgement and successful finish
-                                                                                     acknowledgementInput = RRF "acknowledgement.ftlh" 
-                                                                                     Log "@info Business registration completed for uid: " businessProfile.uid
-                                                                                     Finish businessProfile.uid
-                                                                                Otherwise
-                                                                                     When secondOtpResult.error is "ExceededTheNumberOfAttemptsAllowed"
-                                                                                          Log "@error Second OTP validation attempts exceeded"
-                                                                                          Finish secondOtpResult
-                                                                                     When secondOtpResult.error is "ExceededResendAttempts"
-                                                                                          Log "@error Second OTP resend attempts exceeded"
-                                                                                          Finish secondOtpResult
-                                                                                     uiFeedback.errorMessage = "Phone confirmation failed. Try once more."
-                                                                      Log "@error Confirmation phone loop exhausted"
-                                                                      it_fqotf = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                                                      Finish it_fqotf
-                                                                 Otherwise
-                                                                      Log "@error Business user creation failed - returned null"
-                                                                      it_create = {success:false, error: "BusinessCreationFailed"}
-                                                                      Finish it_create
-                                                            Otherwise
-                                                                 Log "@error Invalid email OTP"
-                                                                 uiFeedback.errorMessage = "Invalid OTP. Please try again."
+                                        passwordResult = Trigger org.gluu.agama.businessregistration.password service
+                                        When passwordResult.error is "ExceededTheNumberOfAttemptsAllowed"
+                                             Finish passwordResult
+                                        When passwordResult.success is true
+                                             businessProfile.userPassword = passwordResult.userPassword
+                                             businessProfile.confirmPassword = passwordResult.confirmPassword
+                                             //   Step 8: send email OTP
+                                             emailOtpCode = Call service sendEmail businessProfile.mail businessProfile.lang
+                                             When emailOtpCode is null
+                                                  uiFeedback.errorMessage = "Failed to send OTP. Please try again or contact Customer Support"
+                                             Otherwise
+                                                  Log "@info Business email OTP sent to: " businessProfile.mail
+                                                  emailResendCount = 0
+                                                  emailValidationAttempts = 0
+                                                  uiFeedback.errorMessage = ""
+                                                  uiFeedback.infoMessage = ""
+                                                  Repeat 20 times max
+                                                       uiFeedback.email = businessProfile.mail
+                                                       emailOtpCreds = RRF "otp.ftlh" uiFeedback
+                                                       When emailOtpCreds.resend is "yes"
+                                                            Log "@info Business email OTP resend requested"
+                                                            When emailResendCount is 3
+                                                                 Log "@error Email OTP resend exceeded"
+                                                                 it_siweg = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                                                 Finish it_siweg
+                                                            emailResendCount = Call org.gluu.agama.newregistration.CounterHelper#increment emailResendCount
+                                                            Log "@info Email resend attempt: " emailResendCount
+                                                            emailOtpCode = Call service sendEmail businessProfile.mail businessProfile.lang
+                                                            When emailOtpCode is null
+                                                                 uiFeedback.errorMessage = "Failed to send OTP. Please try again."
                                                                  uiFeedback.infoMessage = ""
-                                             //   Email loop fell through without Finish - exhausted
-                                             Log "@error Email OTP loop completed without success"
-                                             it_gzxga = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                                             Finish it_gzxga
+                                                            Otherwise
+                                                                 uiFeedback.infoMessage = "A new OTP code has been send to your business email"
+                                                                 uiFeedback.errorMessage = ""
+                                                       Otherwise
+                                                            Log "@info Business email OTP submitted by user"
+                                                            emailValidationAttempts = Call org.gluu.agama.newregistration.CounterHelper#increment emailValidationAttempts
+                                                            When emailValidationAttempts is 4
+                                                                 Log "@error Email OTP validation exceeded"
+                                                                 it_navck = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                                                 Finish it_navck
+                                                            Otherwise
+                                                                 emailOtpOk = Call service validateEmailOTP businessProfile.mail emailOtpCreds.passcode
+                                                                 When emailOtpOk is true
+                                                                      Log "@info Business email OTP verified - creating business user"
+                                                                      //   Step 9: create business user in LDAP with jansExtUid linkage
+                                                                      businessInum = Call service addNewBusinessUser businessProfile personalInum personalPhone
+                                                                      When businessInum is not null
+                                                                           Log "@info Business user created with inum: " businessInum
+                                                                           //   Send welcome email to business email
+                                                                           sendemailStatus = Call service sendAccountCreationNotificationEmail businessProfile.mail businessProfile.uid businessProfile.lang
+                                                                           Log "@info Welcome email status: " sendemailStatus
+                                                                           //   Step 10+: business-phone confirmation loop - 3 attempts max
+                                                                           uiFeedback.phone = personalPhone
+                                                                           uiFeedback.errorMessage = ""
+                                                                           uiFeedback.infoMessage = ""
+                                                                           Repeat 3 times max
+                                                                                phoneConfirmInput = RRF "ConfirmBusinessPhone.ftlh" uiFeedback
+                                                                                verificationMethod2 = phoneConfirmInput.verificationMethod
+                                                                                businessLang = businessProfile.lang
+                                                                                secondSend = Call service sendOTPCode personalPhone businessLang verificationMethod2
+                                                                                When secondSend is null
+                                                                                     Log "@error Second OTP send failed"
+                                                                                     uiFeedback.errorMessage = "Failed to send confirmation OTP. Please try again."
+                                                                                Otherwise
+                                                                                     Log "@info Second OTP sent for business phone confirmation"
+                                                                                     secondOtpResult = Trigger org.gluu.agama.businessregistration.verifyphoneotp service personalPhone businessLang verificationMethod2
+                                                                                     Log "@info Second OTP subflow result: " secondOtpResult
+                                                                                     When secondOtpResult.success is true
+                                                                                          //   Step 12: stamp telephoneNumber + phoneNumberVerified
+                                                                                          phoneVerified = Call service markPhoneAsVerified businessProfile.uid personalPhone
+                                                                                          Log "@info Business phone marked verified: " phoneVerified
+                                                                                          //   Step 13: acknowledgement and successful finish
+                                                                                          acknowledgementInput = RRF "acknowledgement.ftlh" 
+                                                                                          Log "@info Business registration completed for uid: " businessProfile.uid
+                                                                                          Finish businessProfile.uid
+                                                                                     Otherwise
+                                                                                          When secondOtpResult.error is "ExceededTheNumberOfAttemptsAllowed"
+                                                                                               Log "@error Second OTP validation attempts exceeded"
+                                                                                               Finish secondOtpResult
+                                                                                          When secondOtpResult.error is "ExceededResendAttempts"
+                                                                                               Log "@error Second OTP resend attempts exceeded"
+                                                                                               Finish secondOtpResult
+                                                                                          uiFeedback.errorMessage = "Phone confirmation failed. Try once more."
+                                                                           Log "@error Confirmation phone loop exhausted"
+                                                                           it_uiubk = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                                                           Finish it_uiubk
+                                                                      Otherwise
+                                                                           Log "@error Business user creation failed - returned null"
+                                                                           it_create = {success:false, error: "BusinessCreationFailed"}
+                                                                           Finish it_create
+                                                                 Otherwise
+                                                                      Log "@error Invalid email OTP"
+                                                                      uiFeedback.errorMessage = "Invalid OTP. Please try again."
+                                                                      uiFeedback.infoMessage = ""
+                                                  //   Email loop fell through without Finish - exhausted
+                                                  Log "@error Email OTP loop completed without success"
+                                                  it_iwabq = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                                                  Finish it_iwabq
                                    Otherwise
                                         Log "@error Business username already taken: " businessProfile.uid
                                         uiFeedback.errorMessage = "This business username is already taken. Please choose a different one."
@@ -161,8 +167,8 @@ Repeat 4 times max
                               uiFeedback.errorMessage = validation.message
                     //   Business profile loop exhausted (4 attempts)
                     Log "@error Business profile loop exhausted"
-                    it_npkwn = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-                    Finish it_npkwn
+                    it_gqvco = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+                    Finish it_gqvco
                Otherwise
                     //   First OTP failed - surface specific subflow errors immediately
                     When firstOtpResult.error is "ExceededTheNumberOfAttemptsAllowed"
@@ -174,5 +180,5 @@ Repeat 4 times max
                     uiFeedback.errorMessage = "Phone OTP failed. Please contact Customer Support"
 //   Outer Repeat (3 attempts) exhausted - too many attempts
 Log "@error Personal lookup loop exhausted"
-it_upswk = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
-Finish it_upswk
+it_xxztd = {success:false, error: "ExceededTheNumberOfAttemptsAllowed"}
+Finish it_xxztd

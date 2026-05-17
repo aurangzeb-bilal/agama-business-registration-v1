@@ -8,17 +8,23 @@ import org.gluu.agama.businessregistration.JansBusinessUserRegistration;
 
 public abstract class BusinessUserRegistration {
 
+
     public abstract boolean isPersonalVerified(String personalUid);
+
+
     public abstract Map<String, String> getPersonalUserDetails(String personalUid);
 
+    // OTP send/validate (shared between personal-phone and business-phone OTPs).
     public abstract String sendOTPCode(String phone, String lang, String verificationMethod);
     public abstract boolean validateOTPCode(String phone, String code);
+
+    // Email OTP for business email.
+    public abstract String sendEmail(String to, String lang);
     public abstract boolean validateEmailOTP(String email, String code);
 
-    public abstract String sendEmail(String to, String lang);
-
-
+    // Business profile validation + creation.
     public abstract Map<String, Object> validateBusinessInputs(Map<String, String> profile);
+    public abstract Map<String, Object> validateBusinessPassword(Map<String, String> profile);
     public abstract Map<String, String> getUserEntityByMail(String email);
     public abstract Map<String, String> getUserEntityByUsername(String username);
     public abstract String addNewBusinessUser(Map<String, String> profile, String personalInum, String phone);
