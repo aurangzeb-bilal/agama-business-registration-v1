@@ -1,8 +1,8 @@
-package org.gluu.agama.smtp;
+package org.gluu.agama.business.smtp;
 
 
 
-class AccountCreationTemplateId {
+class AccountCreationTemplatePt {
 
     static Map<String, String> get(String userName) {
 
@@ -20,27 +20,27 @@ class AccountCreationTemplateId {
             </tr>
             <tr>
               <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;font-size:16px;color:#51545E;line-height:1.625;">
-                <p>Halo,</p>
-                <p>Selamat datang di <strong>Phi Wallet Business</strong>! Akun bisnis Anda kini aktif.</p>
+                <p>Olá,</p>
+                <p>Bem-vindo à <strong>Phi Wallet Business</strong>! A sua conta empresarial está agora ativa.</p>
 
-                <p><strong>Nama pengguna bisnis Anda:</strong></p>
+                <p><strong>O seu nome de utilizador empresarial:</strong></p>
                 <div style="text-align:center;margin:30px 0;">
                   <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:28px;font-weight:600;letter-spacing:2px;padding:10px 20px;border-radius:4px;">
                     """ + userName + """
                   </div>
                 </div>
 
-                <p><strong>Langkah Selanjutnya: Verifikasi identitas bisnis Anda</strong></p>
-                <p>Untuk mengaktifkan akun Anda dan mendapatkan akses penuh, kami perlu memverifikasi bisnis Anda. Langkah ini mengonfirmasi kepemilikan dan melindungi aset bisnis Anda.</p>
+                <p><strong>Próximo passo: Verificar a identidade da sua empresa</strong></p>
+                <p>Para ativar a sua conta e obter acesso total, precisamos de verificar a sua empresa. Este passo confirma a titularidade e protege os ativos da sua empresa.</p>
 
                 <div style="text-align:center;margin:30px 0;">
                   <a href="https://link.business.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;">
-                    Buka Aplikasi
+                    Abrir a aplicação
                   </a>
                 </div>
 
-                <p>Jika Anda memiliki pertanyaan, kami siap membantu. Terima kasih telah memilih Phi Wallet Business!</p>
-                <p style="margin-top:30px;">Salam hangat,<br>Tim Phi Wallet Business</p>
+                <p>Se tiver alguma questão, estamos à distância de uma mensagem. Obrigado por escolher a Phi Wallet Business!</p>
+                <p style="margin-top:30px;">Com os melhores cumprimentos,<br>Equipa Phi Wallet Business</p>
               </td>
             </tr>
           </tbody>
@@ -50,7 +50,7 @@ class AccountCreationTemplateId {
           <tbody>
             <tr>
               <td style="padding:20px;font-size:12px;color:#666;">
-                <p style="font-size:14px;font-weight:bold;color:#565555;">Ikuti kami di:</p>
+                <p style="font-size:14px;font-weight:bold;color:#565555;">Siga-nos em:</p>
                 <p>
                   <a href="https://www.facebook.com/PhiWallet"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/facebook.png" style="height:20px;margin:0 5px;"></a>
                   <a href="https://x.com/PhiWallet"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/twitter.png" style="height:20px;margin:0 5px;"></a>
@@ -75,7 +75,7 @@ class AccountCreationTemplateId {
 """;
 
         return Map.of(
-            "subject", "Mulai dengan Phi Wallet Business",
+            "subject", "Comece com a Phi Wallet Business",
             "body", html
         );
     }

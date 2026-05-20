@@ -1,10 +1,10 @@
-package org.gluu.agama.smtp;
+package org.gluu.agama.business.smtp;
 
-import java.util.Map;
 
-class EmailRegistrationOtpAr {
 
-    static Map<String, String> get(String otp) {
+class AccountCreationTemplateEn {
+
+    static Map<String, String> get(String userName) {
 
         String html = """
 <table role="presentation" cellspacing="0" cellpadding="0" width="100%" style="background-color:#F2F4F6;margin:0;padding:0;width:100%;">
@@ -23,24 +23,32 @@ class EmailRegistrationOtpAr {
             <!-- Main Email Body -->
             <tr>
               <td style="width:100%;margin:0;padding:0;">
-                <table role="presentation" dir="rtl" cellspacing="0" cellpadding="0" width="570" align="center" style="background-color:#FFFFFF;margin:0 auto;padding:0;border-radius:4px;">
+                <table role="presentation" cellspacing="0" cellpadding="0" width="570" align="center" style="background-color:#FFFFFF;margin:0 auto;padding:0;border-radius:4px;">
                   <tbody>
                     <tr>
                       <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;color:#51545E;font-size:16px;line-height:1.625;">
-                        <p dir="rtl">مرحبًا،</p>
-                        <p>أدخل الرمز المكوّن من 6 أرقام أدناه للتحقق من بريدك الإلكتروني ومتابعة إعداد حسابك التجاري.</p>
+                        <p>Dear User,</p>
+                        <p>Welcome to Phi Wallet Business! Your business account is now active.</p>
 
+                        <p><strong>Your business username:</strong></p>
                         <div style="text-align:center;margin:30px 0;">
-                          <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:40px;font-weight:600;letter-spacing:6px;padding:10px 20px;border-radius:4px;">
-                            """ + otp + """
+                          <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:28px;font-weight:600;letter-spacing:2px;padding:10px 20px;border-radius:4px;">
+                            """ + userName + """
                           </div>
                         </div>
 
-                        <p>إذا لم تطلب هذا الإجراء، يمكنك تجاهل هذه الرسالة بأمان. سيبقى حسابك آمِنًا.</p>
-                        <p>شكرًا لثقتك بنا.</p>
+                        <p><strong>Next Step: Verify your business identity</strong></p>
+                        <p>To activate your business and unlock full access, we need to verify your business. This step confirms ownership and protects your business assets.</p>
 
-                        <p style="margin-top:30px;">مع التحية،<br>فريق Phi Wallet Business</p>
+                        <div style="text-align:center;margin:30px 0;">
+                          <a href="https://link.business.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;display:inline-block;">
+                            Open the App
+                          </a>
+                        </div>
 
+                        <p>If you have any questions, we are just a message away. Thank you for choosing Phi Wallet Business!</p>
+
+                        <p style="margin-top:30px;">Kind regards,<br>Phi Wallet Business Team</p>
                       </td>
                     </tr>
                   </tbody>
@@ -74,7 +82,7 @@ class EmailRegistrationOtpAr {
                 </table>
               </td>
             </tr>
-            
+
           </tbody>
         </table>
       </td>
@@ -84,7 +92,7 @@ class EmailRegistrationOtpAr {
 """;
 
         return Map.of(
-            "subject", "تحقق من حسابك التجاري",
+            "subject", "Get Started with Phi Wallet Business",
             "body", html
         );
     }

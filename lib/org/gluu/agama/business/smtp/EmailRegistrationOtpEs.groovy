@@ -1,7 +1,8 @@
-package org.gluu.agama.smtp;
+package org.gluu.agama.business.smtp;
 
+import java.util.Map;
 
-class EmailRegistrationOtpEn {
+class EmailRegistrationOtpEs {
 
     static Map<String, String> get(String otp) {
 
@@ -15,7 +16,7 @@ class EmailRegistrationOtpEn {
             <!-- Logo -->
             <tr>
               <td align="center" style="padding:25px 0;text-align:center;">
-                <img src="https://storage.googleapis.com/email_template_staticfiles/Phi_logo320x132_Aug2024.png" width="160" alt="Phi Logo" style="border:none;">
+                <img src="https://storage.googleapis.com/email_template_staticfiles/Phi_logo320x132_Aug2024.png" width="160" alt="Logo Phi" style="border:none;">
               </td>
             </tr>
 
@@ -26,8 +27,9 @@ class EmailRegistrationOtpEn {
                   <tbody>
                     <tr>
                       <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;color:#51545E;font-size:16px;line-height:1.625;">
-                        <p>Dear User,</p>
-                        <p>Enter the 6-digit code below to verify your email and continue with your business setup.</p>
+                        <p>Hola,</p>
+                        
+                        <p>Ingresa el código de 6 dígitos a continuación para verificar tu correo electrónico y continuar con la configuración de tu cuenta empresarial.</p>
 
                         <div style="text-align:center;margin:30px 0;">
                           <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:40px;font-weight:600;letter-spacing:6px;padding:10px 20px;border-radius:4px;">
@@ -35,11 +37,11 @@ class EmailRegistrationOtpEn {
                           </div>
                         </div>
 
-                        <p>If you did not request this, you can safely ignore this message. Your account will remain secure.</p>
-                        <p>Thank you for trusting us.</p>
+                        <p>Si no realizaste esta solicitud, puedes ignorar este mensaje con tranquilidad. Tu cuenta seguirá segura.</p>
+                        <p>Gracias por confiar en nosotros.</p>
 
-                        <p style="margin-top:30px;">Thank you,</p>
-                        <p style="margin-top:30px;">Phi Wallet Business Team</p>
+                        <p style="margin-top:30px;">Atentamente,</p>
+                        <p style="margin-top:30px;">Equipo Phi Wallet Business</p>
 
                       </td>
                     </tr>
@@ -84,7 +86,7 @@ class EmailRegistrationOtpEn {
 """;
 
         return Map.of(
-            "subject", "Verify your business account",
+            "subject", "Verifica tu cuenta empresarial",
             "body", html
         );
     }

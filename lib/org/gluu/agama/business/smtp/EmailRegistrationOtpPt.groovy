@@ -1,10 +1,10 @@
-package org.gluu.agama.smtp;
+package org.gluu.agama.business.smtp;
 
+import java.util.Map;
 
+class EmailRegistrationOtpPt {
 
-class AccountCreationTemplateEn {
-
-    static Map<String, String> get(String userName) {
+    static Map<String, String> get(String otp) {
 
         String html = """
 <table role="presentation" cellspacing="0" cellpadding="0" width="100%" style="background-color:#F2F4F6;margin:0;padding:0;width:100%;">
@@ -16,7 +16,7 @@ class AccountCreationTemplateEn {
             <!-- Logo -->
             <tr>
               <td align="center" style="padding:25px 0;text-align:center;">
-                <img src="https://storage.googleapis.com/email_template_staticfiles/Phi_logo320x132_Aug2024.png" width="160" alt="Phi Logo" style="border:none;">
+                <img src="https://storage.googleapis.com/email_template_staticfiles/Phi_logo320x132_Aug2024.png" width="160" alt="Logo Phi" style="border:none;">
               </td>
             </tr>
 
@@ -27,28 +27,22 @@ class AccountCreationTemplateEn {
                   <tbody>
                     <tr>
                       <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;color:#51545E;font-size:16px;line-height:1.625;">
-                        <p>Dear User,</p>
-                        <p>Welcome to Phi Wallet Business! Your business account is now active.</p>
+                        <p>Olá,</p>
 
-                        <p><strong>Your business username:</strong></p>
+                        <p>Insira o código de 6 dígitos abaixo para verificar o seu email e continuar a configuração da sua conta empresarial.</p>
+
                         <div style="text-align:center;margin:30px 0;">
-                          <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:28px;font-weight:600;letter-spacing:2px;padding:10px 20px;border-radius:4px;">
-                            """ + userName + """
+                          <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:40px;font-weight:600;letter-spacing:6px;padding:10px 20px;border-radius:4px;">
+                            """ + otp + """
                           </div>
                         </div>
 
-                        <p><strong>Next Step: Verify your business identity</strong></p>
-                        <p>To activate your business and unlock full access, we need to verify your business. This step confirms ownership and protects your business assets.</p>
+                        <p>Se não solicitou este pedido, pode ignorar esta mensagem com segurança. A sua conta continuará segura.</p>
+                        <p>Obrigado pela sua confiança.</p>
 
-                        <div style="text-align:center;margin:30px 0;">
-                          <a href="https://link.business.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;display:inline-block;">
-                            Open the App
-                          </a>
-                        </div>
+                        <p style="margin-top:30px;">Com os melhores cumprimentos,</p>
+                        <p style="margin-top:30px;">Equipa Phi Wallet Business</p>
 
-                        <p>If you have any questions, we are just a message away. Thank you for choosing Phi Wallet Business!</p>
-
-                        <p style="margin-top:30px;">Kind regards,<br>Phi Wallet Business Team</p>
                       </td>
                     </tr>
                   </tbody>
@@ -63,7 +57,7 @@ class AccountCreationTemplateEn {
                   <tbody>
                     <tr>
                       <td style="padding:20px;font-size:12px;color:#666;">
-                        <p style="margin:0 0 10px 0;font-size:14px;font-weight:bold;color:#565555;">Follow us on:</p>
+                        <p style="margin:0 0 10px 0;font-size:14px;font-weight:bold;color:#565555;">Siga-nos:</p>
                         <p>
                           <a href="https://www.facebook.com/PhiWallet" style="margin:0 5px;"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/facebook.png" style="height:20px;"></a>
                           <a href="https://x.com/PhiWallet" style="margin:0 5px;"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/twitter.png" style="height:20px;"></a>
@@ -92,7 +86,7 @@ class AccountCreationTemplateEn {
 """;
 
         return Map.of(
-            "subject", "Get Started with Phi Wallet Business",
+            "subject", "Verifique a sua conta empresarial",
             "body", html
         );
     }

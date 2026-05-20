@@ -1,8 +1,8 @@
-package org.gluu.agama.smtp;
+package org.gluu.agama.business.smtp;
 
 import java.util.Map;
 
-class EmailRegistrationOtpId {
+class EmailRegistrationOtpAr {
 
     static Map<String, String> get(String otp) {
 
@@ -16,20 +16,19 @@ class EmailRegistrationOtpId {
             <!-- Logo -->
             <tr>
               <td align="center" style="padding:25px 0;text-align:center;">
-                <img src="https://storage.googleapis.com/email_template_staticfiles/Phi_logo320x132_Aug2024.png" width="160" alt="Logo Phi" style="border:none;">
+                <img src="https://storage.googleapis.com/email_template_staticfiles/Phi_logo320x132_Aug2024.png" width="160" alt="Phi Logo" style="border:none;">
               </td>
             </tr>
 
             <!-- Main Email Body -->
             <tr>
               <td style="width:100%;margin:0;padding:0;">
-                <table role="presentation" cellspacing="0" cellpadding="0" width="570" align="center" style="background-color:#FFFFFF;margin:0 auto;padding:0;border-radius:4px;">
+                <table role="presentation" dir="rtl" cellspacing="0" cellpadding="0" width="570" align="center" style="background-color:#FFFFFF;margin:0 auto;padding:0;border-radius:4px;">
                   <tbody>
                     <tr>
                       <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;color:#51545E;font-size:16px;line-height:1.625;">
-                        <p>Halo,</p>
-
-                        <p>Masukkan kode 6 digit di bawah ini untuk memverifikasi email Anda dan melanjutkan pengaturan akun bisnis Anda.</p>
+                        <p dir="rtl">مرحبًا،</p>
+                        <p>أدخل الرمز المكوّن من 6 أرقام أدناه للتحقق من بريدك الإلكتروني ومتابعة إعداد حسابك التجاري.</p>
 
                         <div style="text-align:center;margin:30px 0;">
                           <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:40px;font-weight:600;letter-spacing:6px;padding:10px 20px;border-radius:4px;">
@@ -37,11 +36,10 @@ class EmailRegistrationOtpId {
                           </div>
                         </div>
 
-                        <p>Jika Anda tidak meminta hal ini, abaikan pesan ini dengan aman. Akun Anda akan tetap aman.</p>
-                        <p>Terima kasih atas kepercayaan Anda.</p>
+                        <p>إذا لم تطلب هذا الإجراء، يمكنك تجاهل هذه الرسالة بأمان. سيبقى حسابك آمِنًا.</p>
+                        <p>شكرًا لثقتك بنا.</p>
 
-                        <p style="margin-top:30px;">Salam hangat,</p>
-                        <p style="margin-top:30px;">Tim Phi Wallet Business</p>
+                        <p style="margin-top:30px;">مع التحية،<br>فريق Phi Wallet Business</p>
 
                       </td>
                     </tr>
@@ -57,7 +55,7 @@ class EmailRegistrationOtpId {
                   <tbody>
                     <tr>
                       <td style="padding:20px;font-size:12px;color:#666;">
-                        <p style="margin:0 0 10px 0;font-size:14px;font-weight:bold;color:#565555;">Ikuti kami di:</p>
+                        <p style="margin:0 0 10px 0;font-size:14px;font-weight:bold;color:#565555;">Follow us on:</p>
                         <p>
                           <a href="https://www.facebook.com/PhiWallet" style="margin:0 5px;"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/facebook.png" style="height:20px;"></a>
                           <a href="https://x.com/PhiWallet" style="margin:0 5px;"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/twitter.png" style="height:20px;"></a>
@@ -76,7 +74,7 @@ class EmailRegistrationOtpId {
                 </table>
               </td>
             </tr>
-
+            
           </tbody>
         </table>
       </td>
@@ -86,7 +84,7 @@ class EmailRegistrationOtpId {
 """;
 
         return Map.of(
-            "subject", "Verifikasi akun bisnis Anda",
+            "subject", "تحقق من حسابك التجاري",
             "body", html
         );
     }

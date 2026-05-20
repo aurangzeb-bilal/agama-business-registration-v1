@@ -1,8 +1,8 @@
-package org.gluu.agama.smtp;
+package org.gluu.agama.business.smtp;
 
 import java.util.Map;
 
-class EmailRegistrationOtpPt {
+class EmailRegistrationOtpFr {
 
     static Map<String, String> get(String otp) {
 
@@ -27,9 +27,9 @@ class EmailRegistrationOtpPt {
                   <tbody>
                     <tr>
                       <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;color:#51545E;font-size:16px;line-height:1.625;">
-                        <p>Olá,</p>
+                        <p>Bonjour,</p>
 
-                        <p>Insira o código de 6 dígitos abaixo para verificar o seu email e continuar a configuração da sua conta empresarial.</p>
+                        <p>Saisissez le code à 6 chiffres ci-dessous pour vérifier votre adresse e-mail et poursuivre la création de votre compte d'entreprise.</p>
 
                         <div style="text-align:center;margin:30px 0;">
                           <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:40px;font-weight:600;letter-spacing:6px;padding:10px 20px;border-radius:4px;">
@@ -37,11 +37,11 @@ class EmailRegistrationOtpPt {
                           </div>
                         </div>
 
-                        <p>Se não solicitou este pedido, pode ignorar esta mensagem com segurança. A sua conta continuará segura.</p>
-                        <p>Obrigado pela sua confiança.</p>
+                        <p>Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer ce message en toute sécurité. Votre compte restera protégé.</p>
+                        <p>Merci de votre confiance.</p>
 
-                        <p style="margin-top:30px;">Com os melhores cumprimentos,</p>
-                        <p style="margin-top:30px;">Equipa Phi Wallet Business</p>
+                        <p style="margin-top:30px;">Cordialement,</p>
+                        <p style="margin-top:30px;">L’équipe Phi Wallet Business</p>
 
                       </td>
                     </tr>
@@ -57,7 +57,7 @@ class EmailRegistrationOtpPt {
                   <tbody>
                     <tr>
                       <td style="padding:20px;font-size:12px;color:#666;">
-                        <p style="margin:0 0 10px 0;font-size:14px;font-weight:bold;color:#565555;">Siga-nos:</p>
+                        <p style="margin:0 0 10px 0;font-size:14px;font-weight:bold;color:#565555;">Follow us on:</p>
                         <p>
                           <a href="https://www.facebook.com/PhiWallet" style="margin:0 5px;"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/facebook.png" style="height:20px;"></a>
                           <a href="https://x.com/PhiWallet" style="margin:0 5px;"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/twitter.png" style="height:20px;"></a>
@@ -86,7 +86,7 @@ class EmailRegistrationOtpPt {
 """;
 
         return Map.of(
-            "subject", "Verifique a sua conta empresarial",
+            "subject", "Vérifiez votre compte d'entreprise",
             "body", html
         );
     }

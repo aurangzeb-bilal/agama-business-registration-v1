@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.regex.Pattern;
 
-import org.gluu.agama.smtp.*;
+import org.gluu.agama.business.smtp.*;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;

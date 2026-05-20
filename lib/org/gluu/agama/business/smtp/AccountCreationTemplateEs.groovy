@@ -1,4 +1,4 @@
-package org.gluu.agama.smtp;
+package org.gluu.agama.business.smtp;
 
 
 

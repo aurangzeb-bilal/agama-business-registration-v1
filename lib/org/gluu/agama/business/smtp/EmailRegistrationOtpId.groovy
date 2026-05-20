@@ -1,8 +1,8 @@
-package org.gluu.agama.smtp;
+package org.gluu.agama.business.smtp;
 
 import java.util.Map;
 
-class EmailRegistrationOtpFr {
+class EmailRegistrationOtpId {
 
     static Map<String, String> get(String otp) {
 
@@ -27,9 +27,9 @@ class EmailRegistrationOtpFr {
                   <tbody>
                     <tr>
                       <td style="padding:45px;font-family:'Nunito Sans',Helvetica,Arial,sans-serif;color:#51545E;font-size:16px;line-height:1.625;">
-                        <p>Bonjour,</p>
+                        <p>Halo,</p>
 
-                        <p>Saisissez le code à 6 chiffres ci-dessous pour vérifier votre adresse e-mail et poursuivre la création de votre compte d'entreprise.</p>
+                        <p>Masukkan kode 6 digit di bawah ini untuk memverifikasi email Anda dan melanjutkan pengaturan akun bisnis Anda.</p>
 
                         <div style="text-align:center;margin:30px 0;">
                           <div style="display:inline-block;background-color:#f5f5f5;color:#AD9269;font-size:40px;font-weight:600;letter-spacing:6px;padding:10px 20px;border-radius:4px;">
@@ -37,11 +37,11 @@ class EmailRegistrationOtpFr {
                           </div>
                         </div>
 
-                        <p>Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer ce message en toute sécurité. Votre compte restera protégé.</p>
-                        <p>Merci de votre confiance.</p>
+                        <p>Jika Anda tidak meminta hal ini, abaikan pesan ini dengan aman. Akun Anda akan tetap aman.</p>
+                        <p>Terima kasih atas kepercayaan Anda.</p>
 
-                        <p style="margin-top:30px;">Cordialement,</p>
-                        <p style="margin-top:30px;">L’équipe Phi Wallet Business</p>
+                        <p style="margin-top:30px;">Salam hangat,</p>
+                        <p style="margin-top:30px;">Tim Phi Wallet Business</p>
 
                       </td>
                     </tr>
@@ -57,7 +57,7 @@ class EmailRegistrationOtpFr {
                   <tbody>
                     <tr>
                       <td style="padding:20px;font-size:12px;color:#666;">
-                        <p style="margin:0 0 10px 0;font-size:14px;font-weight:bold;color:#565555;">Follow us on:</p>
+                        <p style="margin:0 0 10px 0;font-size:14px;font-weight:bold;color:#565555;">Ikuti kami di:</p>
                         <p>
                           <a href="https://www.facebook.com/PhiWallet" style="margin:0 5px;"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/facebook.png" style="height:20px;"></a>
                           <a href="https://x.com/PhiWallet" style="margin:0 5px;"><img src="https://storage.googleapis.com/mwapp_prod_bucket/social_icon_images/twitter.png" style="height:20px;"></a>
@@ -86,7 +86,7 @@ class EmailRegistrationOtpFr {
 """;
 
         return Map.of(
-            "subject", "Vérifiez votre compte d'entreprise",
+            "subject", "Verifikasi akun bisnis Anda",
             "body", html
         );
     }
