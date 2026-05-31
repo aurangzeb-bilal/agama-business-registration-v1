@@ -27,10 +27,6 @@ import java.util.regex.Pattern;
 
 import org.gluu.agama.business.smtp.*;
 
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
-
 
 public class JansBusinessUserRegistration extends BusinessUserRegistration {
 
@@ -211,11 +207,11 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
 
             if (mobileAttr != null) {
                 if (mobileAttr.getValue() != null && !mobileAttr.getValue().isEmpty()) {
-                mobile = mobileAttr.getValue();
-            } else if (mobileAttr.getValues() != null && !mobileAttr.getValues().isEmpty()) {
-                Object first = mobileAttr.getValues().get(0);
-                if (first != null) mobile = first.toString();
-            }
+                    mobile = mobileAttr.getValue();
+                } else if (mobileAttr.getValues() != null && !mobileAttr.getValues().isEmpty()) {
+                    Object first = mobileAttr.getValues().get(0);
+                    if (first != null) mobile = first.toString();
+                }
             }
 
             if (mobile == null || mobile.trim().isEmpty()) {
@@ -224,11 +220,11 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             }
 
             String phoneVerified = getSingleValuedAttr(fullUser, PHONE_VERIFIED);
-                if (phoneVerified == null || !"true".equalsIgnoreCase(phoneVerified)) {
+            if (phoneVerified == null || !"true".equalsIgnoreCase(phoneVerified)) {
                 logger.info("Personal user uid={} phone not verified (phoneNumberVerified={})", personalUid, phoneVerified);
                 return result;
-        }
-            
+            }
+
             String inum = getSingleValuedAttr(fullUser, INUM_ATTR);
             String lang = getSingleValuedAttr(fullUser, "lang");
 
@@ -244,7 +240,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     }
 
     // ---------------------------------------------------------------
-    // OTP — Twilio SMS / WhatsApp (mirrors personal flow)
+    // OTP — Twilio SMS / WhatsApp via raw HTTP (no SDK)
     // ---------------------------------------------------------------
 
     @Override
@@ -312,6 +308,14 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 return false;
             }
 
+            // Twilio REST credentials (shared by SMS and WhatsApp branches)
+            String accountSid = flowConfig.get("ACCOUNT_SID");
+            String authToken  = flowConfig.get("AUTH_TOKEN");
+            String credentials = Base64.getEncoder().encodeToString(
+                (accountSid + ":" + authToken).getBytes(java.nio.charset.StandardCharsets.UTF_8)
+            );
+            String twilioUrl = "https://api.twilio.com/2010-04-01/Accounts/" + accountSid + "/Messages.json";
+
             boolean isWhatsApp = "whatsapp".equalsIgnoreCase(verificationMethod);
 
             if (isWhatsApp) {
@@ -321,7 +325,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 }
                 fromNumber = "whatsapp:" + fromNumber;
                 phone = "whatsapp:" + phone;
-                
+
                 String contentSid = getWhatsAppContentSid(lang);
 
                 if (contentSid == null || contentSid.trim().isEmpty()) {
@@ -329,20 +333,14 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                     return false;
                 }
 
-                String accountSid = flowConfig.get("ACCOUNT_SID");
-                String authToken = flowConfig.get("AUTH_TOKEN");
-                String credentials = Base64.getEncoder().encodeToString(
-                    (accountSid + ":" + authToken).getBytes(java.nio.charset.StandardCharsets.UTF_8)
-                );
-
-                String encodedTo = java.net.URLEncoder.encode(phone, "UTF-8");
-                String encodedFrom = java.net.URLEncoder.encode(fromNumber, "UTF-8");
-                String encodedSid = java.net.URLEncoder.encode(contentSid, "UTF-8");
-                String encodedVars = java.net.URLEncoder.encode("{\"1\":\"" + otpCode + "\"}", "UTF-8");
+                String encodedTo    = java.net.URLEncoder.encode(phone, "UTF-8");
+                String encodedFrom  = java.net.URLEncoder.encode(fromNumber, "UTF-8");
+                String encodedSid   = java.net.URLEncoder.encode(contentSid, "UTF-8");
+                String encodedVars  = java.net.URLEncoder.encode("{\"1\":\"" + otpCode + "\"}", "UTF-8");
                 String formBody = "To=" + encodedTo + "&From=" + encodedFrom + "&ContentSid=" + encodedSid + "&ContentVariables=" + encodedVars;
 
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://api.twilio.com/2010-04-01/Accounts/" + accountSid + "/Messages.json"))
+                    .uri(URI.create(twilioUrl))
                     .header("Authorization", "Basic " + credentials)
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .POST(HttpRequest.BodyPublishers.ofString(formBody))
@@ -355,17 +353,36 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                     logger.error("WhatsApp send failed: status={} body={}", response.statusCode(), response.body());
                     return false;
                 }
+                logger.info("WhatsApp OTP sent to {}", phone);
             } else {
-                PhoneNumber FROM_NUMBER = new com.twilio.type.PhoneNumber(fromNumber);
-                PhoneNumber TO_NUMBER = new com.twilio.type.PhoneNumber(phone);
-                Twilio.init(flowConfig.get("ACCOUNT_SID"), flowConfig.get("AUTH_TOKEN"));
-                Message.creator(TO_NUMBER, FROM_NUMBER, message).create();
+                // SMS via raw HTTP — avoids Twilio SDK + its Apache HttpClient 5 dependency
+                String encodedTo    = java.net.URLEncoder.encode(phone, "UTF-8");
+                String encodedFrom  = java.net.URLEncoder.encode(fromNumber, "UTF-8");
+                String encodedBody  = java.net.URLEncoder.encode(message, "UTF-8");
+                String formBody = "To=" + encodedTo + "&From=" + encodedFrom + "&Body=" + encodedBody;
+
+                HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(twilioUrl))
+                    .header("Authorization", "Basic " + credentials)
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .POST(HttpRequest.BodyPublishers.ofString(formBody))
+                    .build();
+
+                HttpResponse<String> response = HttpClient.newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                    logger.error("SMS send failed: status={} body={}", response.statusCode(), response.body());
+                    return false;
+                }
+                logger.info("SMS OTP sent to {} using sender {}", phone, fromNumber);
             }
 
             return true;
 
-        } catch (Exception exception) {
-            logger.error("Error sending OTP to {}: {}", phone, exception.getMessage(), exception);
+        } catch (Throwable t) {
+            // Throwable to catch NoClassDefFoundError cleanly (Twilio SDK absence)
+            logger.error("Error sending OTP to {}: class={} message={}", phone, t.getClass().getName(), t.getMessage(), t);
             return false;
         }
     }
@@ -488,7 +505,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     }
 
     // ---------------------------------------------------------------
-    // Email OTP — reuses personal flow's email templates
+    // Email OTP — reuses business email templates
     // ---------------------------------------------------------------
 
     @Override
@@ -612,7 +629,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             return result;
         }
 
-        
         if (profile.get(ORG_NAME) == null || !Pattern.matches('''^[-A-Za-z0-9 .&',]{2,100}$''', profile.get(ORG_NAME))) {
             result.put("valid", false);
             result.put("message", "Invalid organization name. Must be 2-100 characters using letters, digits, spaces, and . & ' - ,");
@@ -709,10 +725,6 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 }
             });
 
-            if (StringHelper.isNotEmpty(phone)) {
-            user.setAttribute(PHONE_NUMBER, phone);
-            }
-            
             user.setAttribute(EMAIL_VERIFIED, Boolean.TRUE);
             user.setAttribute(PHONE_VERIFIED, Boolean.FALSE);
 
@@ -758,7 +770,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
             user.setAttribute(PHONE_VERIFIED, Boolean.TRUE);
 
             userService.updateUser(user);
-            
+
             return "Phone " + phone + " verified successfully for user " + userName;
         } catch (Exception e) {
             logger.error("Error marking phone verified for {}: {}", userName, e.getMessage(), e);
@@ -767,7 +779,7 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
     }
 
     // ---------------------------------------------------------------
-    // Welcome email — reuses personal flow's account-creation templates
+    // Welcome email — reuses business account-creation templates
     // ---------------------------------------------------------------
 
     @Override
