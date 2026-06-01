@@ -3,7 +3,7 @@
     "description": "Agama flow for business user registration gated by personal-account verification (KYC + face + phone via Phi Wallet mwapp), with email and phone (SMS/WhatsApp) verification.",
     "type": "",
     "author": "Phi Wallet",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "authorWebsite": "",
     "githubUri": "",
     "license": "apache-2.0",
