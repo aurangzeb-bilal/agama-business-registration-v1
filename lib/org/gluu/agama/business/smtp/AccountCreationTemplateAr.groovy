@@ -45,7 +45,6 @@ class AccountCreationTemplateAr {
                             افتح التطبيق
                           </a>
                         </div>
-
                         <p>إذا كانت لديك أي أسئلة، نحن على بُعد رسالة. شكراً لاختيارك Phi Wallet Business!</p>
 
                         <p style="margin-top:30px;">مع أطيب التحيات،<br>فريق Phi Wallet Business</p>
