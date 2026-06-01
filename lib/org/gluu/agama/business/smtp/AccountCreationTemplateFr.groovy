@@ -39,7 +39,7 @@ class AccountCreationTemplateFr {
                         <p>Pour activer votre compte et bénéficier d'un accès complet, nous devons vérifier votre entreprise. Cette étape confirme la propriété et protège vos actifs professionnels.</p>
 
                         <div style="text-align:center;margin:30px 0;">
-                          <a href="https://link.business.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;">
+                          <a href="https://link.business.phiwallet.com/app" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;">
                             Ouvrir l'application
                           </a>
                         </div>

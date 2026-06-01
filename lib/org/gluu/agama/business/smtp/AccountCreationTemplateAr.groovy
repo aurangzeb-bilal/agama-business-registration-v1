@@ -41,11 +41,10 @@ class AccountCreationTemplateAr {
                         <p>لتفعيل نشاطك التجاري وفتح الوصول الكامل، نحتاج إلى التحقق منه. تؤكد هذه الخطوة الملكية وتحمي أصولك التجارية.</p>
 
                         <div style="text-align:center;margin:30px 0;">
-                          <a href="https://link.business.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;display:inline-block;">
+                          <a href="https://link.business.phiwallet.com/app" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;display:inline-block;">
                             افتح التطبيق
                           </a>
                         </div>
-
                         <p>إذا كانت لديك أي أسئلة، نحن على بُعد رسالة. شكراً لاختيارك Phi Wallet Business!</p>
 
                         <p style="margin-top:30px;">مع أطيب التحيات،<br>فريق Phi Wallet Business</p>
