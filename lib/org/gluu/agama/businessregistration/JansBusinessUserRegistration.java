@@ -725,6 +725,10 @@ public class JansBusinessUserRegistration extends BusinessUserRegistration {
                 }
             });
 
+            if (StringHelper.isNotEmpty(phone)) {
+                user.setAttribute(PHONE_NUMBER, phone);
+            }
+
             user.setAttribute(EMAIL_VERIFIED, Boolean.TRUE);
             user.setAttribute(PHONE_VERIFIED, Boolean.FALSE);
 
