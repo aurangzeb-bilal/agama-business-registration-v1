@@ -34,7 +34,7 @@ class AccountCreationTemplateId {
                 <p>Untuk mengaktifkan akun Anda dan mendapatkan akses penuh, kami perlu memverifikasi bisnis Anda. Langkah ini mengonfirmasi kepemilikan dan melindungi aset bisnis Anda.</p>
 
                 <div style="text-align:center;margin:30px 0;">
-                  <a href="https://link.business.phiwallet.com/vll3ylhkeqb" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;">
+                  <a href="https://link.business.phiwallet.com/app" style="background-color:#AD9269;color:#ffffff;padding:14px 28px;text-decoration:none;border-radius:4px;font-weight:600;">
                     Buka Aplikasi
                   </a>
                 </div>
